@@ -115,14 +115,28 @@ public class ImportedGraph {
 
         //if all vertex to be added already exists, do not append it to the graph
         for(String vertex : labels) {
-            if (allVertices.contains(vertex)) {
-                System.out.println("Failed to add! Vertex " + vertex + " already exists!");
-            } else {
-                g.addVertex(vertex);
-            }
+            addNode(vertex);
         }
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2: Adding Edges~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+    //Adds an edge to and from specified nodes
+    void addEdge(String srcLabel, String dstLabel){
+
+        //First, check if the labels specified exist in the graph
+        //and add them if they are not
+        String[] sources = {srcLabel, dstLabel};
+        this.addNodes(sources);
+
+        //Then check if the edge relationship makes sense
+        if(g.containsEdge(srcLabel, dstLabel)){
+            System.out.println("Failed to add edge. " + srcLabel + " -> " + dstLabel + "already exists!");
+        }
+        else{ //If edge makes sense, add its relationship to the graph
+            g.addEdge(srcLabel, dstLabel);
+        }
+
+    }
 
 }

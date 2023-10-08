@@ -145,9 +145,8 @@ public class TestImportedGraph {
         ig.addNodes(newNodes);
 
         int expected = 9;
-        int result = ig.getAmountOfVertices();
 
-        assertEquals(expected, result);
+        assertEquals(expected, ig.getAmountOfVertices());
 
     }
 
@@ -167,9 +166,48 @@ public class TestImportedGraph {
         ig.addNodes(newNodes);
 
         int expected = 7;
-        int result = ig.getAmountOfVertices();
 
-        assertEquals(expected, result);
+        assertEquals(expected, ig.getAmountOfVertices());
+
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 3 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Test
+    //adds a new edge to the graph
+    public void testAddEdgeValid(){
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        ig.addEdge("d", "b");
+
+        int expected = 5;
+
+        assertEquals(expected, ig.getAmountOfEdges());
+
+    }
+
+    @Test
+    //adds an old edge to the graph
+    public void testAddEdgeInValid(){
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        ig.addEdge("b", "c");
+
+        int expected = 4;
+
+        assertEquals(expected, ig.getAmountOfEdges());
 
     }
 
