@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 
 public class TestImportedGraph {
 
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Test Value Setup~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ImportedGraph ig; //Imported Graph Instance that will be used for testing
 
@@ -90,6 +89,87 @@ public class TestImportedGraph {
         assertEquals("The files differ!",
                 FileUtils.readFileToString(expected, "utf-8"),
                 FileUtils.readFileToString(result, "utf-8"));
+
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    @Test
+    // Add a new valid vertex to the graph
+    public void testAddNodeValid(){
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        String result = ig.addNode("e");
+        String expected = "e successfully added!";
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    // Attempt to add an invalid vertex to the graph
+    public void testAddNodeInvalid(){
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        String result = ig.addNode("d");
+        String expected = "Failed to add! Vertex d already exists!";
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    //Attempts to add a list of completely new vertices to the graph
+    public void testAddNodesValid(){
+
+        String[] newNodes = {"e","f","g","h","i"};
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        ig.addNodes(newNodes);
+
+        int expected = 9;
+        int result = ig.getAmountOfVertices();
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    //Attempts to add a list of some new and some old vertices to the graph
+    public void testAddNodesSemialid(){
+
+        String[] newNodes = {"e","a","g","b","i"};
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        ig.addNodes(newNodes);
+
+        int expected = 7;
+        int result = ig.getAmountOfVertices();
+
+        assertEquals(expected, result);
 
     }
 

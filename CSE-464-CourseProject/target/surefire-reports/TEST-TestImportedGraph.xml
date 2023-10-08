@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="TestImportedGraph" time="0.396" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="TestImportedGraph" time="0.351" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="20.0.2+9-78"/>
@@ -61,7 +61,11 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="TestImportedGraph" name="testParseGraph" time="0.309"/>
-  <testcase classname="TestImportedGraph" name="testOutputGraph" time="0.081"/>
+  <testcase classname="TestImportedGraph" name="testParseGraph" time="0.231"/>
+  <testcase classname="TestImportedGraph" name="testOutputGraph" time="0.083"/>
   <testcase classname="TestImportedGraph" name="testToString" time="0.006"/>
+  <testcase classname="TestImportedGraph" name="testAddNodesValid" time="0.006"/>
+  <testcase classname="TestImportedGraph" name="testAddNodesSemialid" time="0.014"/>
+  <testcase classname="TestImportedGraph" name="testAddNodeValid" time="0.005"/>
+  <testcase classname="TestImportedGraph" name="testAddNodeInvalid" time="0.006"/>
 </testsuite>

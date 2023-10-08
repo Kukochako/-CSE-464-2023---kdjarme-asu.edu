@@ -13,6 +13,15 @@ public class ImportedGraph {
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~ACCESSORS~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    int getAmountOfVertices(){
+        return g.vertexSet().size();
+    }
+
+    int getAmountOfEdges(){
+        return g.edgeSet().size();
+    }
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Allows a user to parse a DOT file to create a graph
@@ -81,5 +90,39 @@ public class ImportedGraph {
 
         return true;
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2: Adding Vertices~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    //Function that allows a user to add a node to the imported graph
+    String addNode(String label){
+
+        Set<String> allVertices = g.vertexSet();
+        //if all vertex to be added already exists, do not append it to the graph
+        if(allVertices.contains(label)){
+            return "Failed to add! Vertex " + label + " already exists!";
+        }
+        else{
+            g.addVertex(label);
+        }
+
+        return label + " successfully added!";
+    }
+
+    //Function that allows a user to add multiple nodes at once to the imported graph
+    void addNodes(String[] labels){
+
+        Set<String> allVertices = g.vertexSet();
+
+        //if all vertex to be added already exists, do not append it to the graph
+        for(String vertex : labels) {
+            if (allVertices.contains(vertex)) {
+                System.out.println("Failed to add! Vertex " + vertex + " already exists!");
+            } else {
+                g.addVertex(vertex);
+            }
+        }
+    }
+
+
 
 }
