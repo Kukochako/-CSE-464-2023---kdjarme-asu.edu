@@ -4,9 +4,9 @@ This project implements a program that is able to parse a DOT file, make modifca
 The program is primarily a single class known as ImportedGraph that contains all methods for the first four features and a test class called TestImportedGraph that contains test cases for the ImportedGraph class.
 
 ## Table of Contents
-  - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#maven-setup)
-  - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#api)
-  - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#test-notes)
+  - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
+  - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
+  - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
 ## Maven Setup
 This program uses Maven to handle its dependencies. To get started, access the folder of the program in your terminal and compile using the command.<br><br>
@@ -17,10 +17,10 @@ This will download all necessary dependencies for the code
 This program's development is broken up into multiple features that are developed over time. The features and their documentation are noted in this section.
 
 ### Table of Contents
-  - [Feature 1](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#feature-1---parsing-a-dot-file)
-  - [Feature 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#feature-2---adding-vertices)
-  - [Feature 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#feature-3---adding-edges)
-  - [Feature 4](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/edit/main/README.md#feature-4---outputting-importedgraph-objects)
+  - [Feature 1](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-1---parsing-a-dot-file)
+  - [Feature 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-2---adding-vertices)
+  - [Feature 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-3---adding-edges)
+  - [Feature 4](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-4---outputting-importedgraph-objects)
 
 ### Feature 1 - Parsing a DOT File
 <b>Link:</b> [Link to Feature 1 commit](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/0093cac456e4741939d79b4948c53eb850e1c94b)<br><br>
