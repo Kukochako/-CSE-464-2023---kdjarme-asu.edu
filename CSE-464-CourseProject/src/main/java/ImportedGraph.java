@@ -140,6 +140,7 @@ public class ImportedGraph {
         }
         else{ //If edge makes sense, add its relationship to the graph
             g.addEdge(srcLabel, dstLabel);
+            System.out.println("New edge: " + srcLabel + " -> " + dstLabel + " was added successfully!");
         }
 
     }
