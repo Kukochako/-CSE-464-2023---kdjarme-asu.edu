@@ -1,3 +1,6 @@
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.*;
 import org.jgrapht.graph.*;
 import org.jgrapht.nio.dot.*;
 
@@ -8,26 +11,28 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import static guru.nidi.graphviz.model.Factory.*;
+
 public class ImportedGraph {
 
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~ACCESSORS~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    int getAmountOfVertices(){
+    public int getAmountOfVertices(){
         return g.vertexSet().size();
     }
 
-    int getAmountOfEdges(){
+    public int getAmountOfEdges(){
         return g.edgeSet().size();
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Allows a user to parse a DOT file to create a graph
-    boolean parseGraph(String filePath) throws IOException {
+    public boolean parseGraph(String filePath) throws IOException {
 
-        //Creates importer object to facillitate translating dot format to graph variable
+        //Creates importer object to facilitate translating dot format to graph variable
         DOTImporter<String, DefaultEdge> dotimp = new DOTImporter<>();
         dotimp.setVertexFactory(vertexName -> vertexName); //defines how vertexes are created
 
@@ -79,10 +84,10 @@ public class ImportedGraph {
     }
 
     //writes out graph to string file of specified location
-    boolean outputGraph(String filepath) throws IOException {
+    public boolean outputGraph(String filepath) throws IOException {
 
         try {
-            Files.writeString(Paths.get(filepath + "outputOG.txt"), toString(), StandardCharsets.UTF_8);
+            Files.writeString(Paths.get(filepath), toString(), StandardCharsets.UTF_8);
         }
         catch(IOException e){
             System.out.println(e);
@@ -94,7 +99,7 @@ public class ImportedGraph {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2: Adding Vertices~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Function that allows a user to add a node to the imported graph
-    String addNode(String label){
+    public String addNode(String label){
 
         Set<String> allVertices = g.vertexSet();
         //if all vertex to be added already exists, do not append it to the graph
@@ -109,33 +114,98 @@ public class ImportedGraph {
     }
 
     //Function that allows a user to add multiple nodes at once to the imported graph
-    void addNodes(String[] labels){
+    public void addNodes(String[] labels){
 
         Set<String> allVertices = g.vertexSet();
 
         //if all vertex to be added already exists, do not append it to the graph
         for(String vertex : labels) {
-            addNode(vertex);
+            System.out.println(addNode(vertex));
         }
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2: Adding Edges~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 3: Adding Edges~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Adds an edge to and from specified nodes
-    void addEdge(String srcLabel, String dstLabel){
+    public void addEdge(String srcLabel, String dstLabel){
 
         //First, check if the labels specified exist in the graph
         //and add them if they are not
         String[] sources = {srcLabel, dstLabel};
-        this.addNodes(sources);
+        addNodes(sources);
 
         //Then check if the edge relationship makes sense
         if(g.containsEdge(srcLabel, dstLabel)){
-            System.out.println("Failed to add edge. " + srcLabel + " -> " + dstLabel + "already exists!");
+            System.out.println("Failed to add edge. " + srcLabel + " -> " + dstLabel + " already exists!");
         }
         else{ //If edge makes sense, add its relationship to the graph
             g.addEdge(srcLabel, dstLabel);
         }
+
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Exporting Graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    //Function that exports the imported graph object to be output as a DOT file
+    public void outputDOTGraph(String filePath){
+
+        //Creates importer object to facillitate translating dot format to graph variable
+        DOTExporter<String, DefaultEdge> dotexp = new DOTExporter<>(vertexName -> vertexName);
+        //dotexp.setVertexAttributeProvider();
+
+        try {
+            //reads dotfile from input and creates reader to process it
+            File myFile = new File(filePath);
+            FileWriter wr = new FileWriter(myFile);
+
+            dotexp.exportGraph(g,wr); //exports dotfile data into graph variable
+
+            wr.close(); //closes writer to prevent memory leaks
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
+
+    public boolean outputGraphics(String filePath, String format) throws IOException {
+
+            //Creates Graph in format of viz-graph specifications
+            MutableGraph vizg = mutGraph().setDirected(true);//mutgraph("exportedGraph").directed();
+
+            //adds all vertices as nodes to the vizgraph
+            Set<String> allVertices = g.vertexSet();
+            for(String vertex : allVertices ) {
+                Node newNode = node(vertex);
+                vizg.add(newNode);
+            }
+
+            //adds all edges to the vizgraph
+            Set<DefaultEdge> allEdges = g.edgeSet();
+            for(Object edge : allEdges){
+
+                //Grabs the name of the nodes
+                String temp = edge.toString(); //array of all the edge in string format
+                String[] tempArr = temp.split(":"); //splits the string between the name of the first node and the second
+
+                //node(tempArr[0].substring(1, tempArr[0].length()-1)) refers to the name of the source node
+                //node(tempArr[1].substring(1,tempArr[1].length()-1)) refers to the name of the target node
+                vizg.add(node(tempArr[0].substring(1, tempArr[0].length()-1)).link(node(tempArr[1].substring(1,tempArr[1].length()-1))));
+            }
+
+            //Changes output image based on specified format,
+            // more features intended to be added later
+        switch(format){
+
+            case "PNG":
+                Graphviz.fromGraph(vizg).width(900).render(Format.PNG).toFile(new File(filePath + ".png"));
+            break;
+
+            default:
+                System.out.println("Format entered is not recognized!");
+                return false;
+        }
+
+        return true;
 
     }
 

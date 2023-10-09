@@ -13,7 +13,16 @@ public class TestImportedGraph {
 
     @Before
     public void setup(){
+
         ig = new ImportedGraph();
+
+        try {
+            ig.parseGraph("src/dot/sample.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
         System.out.println("~~READY TO TEST~~");
     }
 
@@ -25,10 +34,13 @@ public class TestImportedGraph {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     @Test
     //tests Parse Graph functionality
-    public void testParseGraph() throws IOException {
+    public void testParseGraph() {
 
         try {
-            assertTrue(ig.parseGraph("src/dot/sample.dot"));
+
+            ImportedGraph sampleIG = new ImportedGraph();
+            assertTrue(sampleIG.parseGraph("src/dot/sample.dot"));
+
         }
         catch(IOException e){
             System.out.println(e);
@@ -40,17 +52,7 @@ public class TestImportedGraph {
     //tests toString functionality
     public void testToString() throws IOException {
 
-        String result = ""; //captures the value produced after toString is ran
-
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-
-            result = ig.toString();
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-
+        String result = ig.toString(); //captures the value produced after toString is ran
 
         String expected = "Number of Vertices: 4\n" +
                 "Vertex Names:\n" +
@@ -76,8 +78,7 @@ public class TestImportedGraph {
     public void testOutputGraph() throws IOException {
 
         try {
-            ig.parseGraph("src/dot/sample.dot");
-            ig.outputGraph("src/outputs/");
+            ig.outputGraph("src/outputs/outputOG.txt");
         }
         catch(IOException e){
             System.out.println(e);
@@ -97,13 +98,6 @@ public class TestImportedGraph {
     // Add a new valid vertex to the graph
     public void testAddNodeValid(){
 
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-
         String result = ig.addNode("e");
         String expected = "e successfully added!";
 
@@ -114,13 +108,6 @@ public class TestImportedGraph {
     @Test
     // Attempt to add an invalid vertex to the graph
     public void testAddNodeInvalid(){
-
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
 
         String result = ig.addNode("d");
         String expected = "Failed to add! Vertex d already exists!";
@@ -134,14 +121,6 @@ public class TestImportedGraph {
     public void testAddNodesValid(){
 
         String[] newNodes = {"e","f","g","h","i"};
-
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-
         ig.addNodes(newNodes);
 
         int expected = 9;
@@ -152,17 +131,9 @@ public class TestImportedGraph {
 
     @Test
     //Attempts to add a list of some new and some old vertices to the graph
-    public void testAddNodesSemialid(){
+    public void testAddNodesSemiValid(){
 
         String[] newNodes = {"e","a","g","b","i"};
-
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-
         ig.addNodes(newNodes);
 
         int expected = 7;
@@ -177,13 +148,6 @@ public class TestImportedGraph {
     //adds a new edge to the graph
     public void testAddEdgeValid(){
 
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-
         ig.addEdge("d", "b");
 
         int expected = 5;
@@ -193,15 +157,8 @@ public class TestImportedGraph {
     }
 
     @Test
-    //adds an old edge to the graph
+    //adds an existing edge to the graph
     public void testAddEdgeInValid(){
-
-        try {
-            ig.parseGraph("src/dot/sample.dot");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
 
         ig.addEdge("b", "c");
 
@@ -209,6 +166,41 @@ public class TestImportedGraph {
 
         assertEquals(expected, ig.getAmountOfEdges());
 
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Test
+    //outputs imported graph into DOT File format
+    public void testOutputDOTGraph() throws IOException {
+
+        ig.outputDOTGraph("src/outputs/outputODG.dot");
+
+        ImportedGraph resultIG = new ImportedGraph();
+
+        try {
+            resultIG.parseGraph("src/outputs/outputODG.dot");
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        //All vertices and edges of the graphs must be the same
+        assertEquals(ig.getAmountOfEdges(), resultIG.getAmountOfEdges());
+        assertEquals(ig.getAmountOfVertices(), resultIG.getAmountOfVertices());
+
+    }
+
+    @Test
+    //tests the output to image file feature for the imported graph
+    public void testOutputGraphics() throws IOException {
+
+        try {
+            assertTrue(ig.outputGraphics("src/outputs/outputOutputGraphics", "PNG"));
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
     }
 
 }
