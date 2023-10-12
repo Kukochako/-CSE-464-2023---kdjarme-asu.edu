@@ -49,6 +49,22 @@ public class TestImportedGraph {
     }
 
     @Test
+    //tests Parse Graph functionality when a bad filepath is passed
+    public void testParseGraphFalse() {
+
+        try {
+
+            ImportedGraph sampleIG = new ImportedGraph();
+            assertFalse(sampleIG.parseGraph("NOT A REAL LOCATION"));
+
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+    }
+
+    @Test
     //tests toString functionality
     public void testToString() throws IOException {
 
@@ -74,7 +90,7 @@ public class TestImportedGraph {
     }
 
     @Test
-    //tests toString functionality
+    //tests outputGraph functionality
     public void testOutputGraph() throws IOException {
 
         try {
@@ -91,6 +107,18 @@ public class TestImportedGraph {
                 FileUtils.readFileToString(expected, "utf-8"),
                 FileUtils.readFileToString(result, "utf-8"));
 
+    }
+
+    @Test
+    //tests outputGraph functionality when a bad filepath is passed in
+    public void testOutputGraphFalse() throws IOException {
+
+        try {
+            assertFalse(ig.outputGraph("\\\\\\!"));
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 2 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -192,11 +220,43 @@ public class TestImportedGraph {
     }
 
     @Test
+    //tests outputDotGraph if a bad filepath is entered
+    public void testOutputDOTGraphFalse() {
+
+        assertFalse(ig.outputDOTGraph("\\\\\\"));
+
+    }
+
+    @Test
     //tests the output to image file feature for the imported graph
     public void testOutputGraphics() throws IOException {
 
         try {
             assertTrue(ig.outputGraphics("src/outputs/outputOutputGraphics", "PNG"));
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    //tests the output to image file feature for the imported graph if a bad filepath is entered
+    public void testOutputGraphicsFalsePath() throws IOException {
+
+        try {
+            assertFalse(ig.outputGraphics("\\\\", "PNG"));
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    //tests the output to image file feature for the imported graph if a bad filepath is entered
+    public void testOutputGraphicsFalseFormat() throws IOException {
+
+        try {
+            assertFalse(ig.outputGraphics("src/outputs/outputOutputGraphics", "BAD"));
         }
         catch(IOException e){
             System.out.println(e);

@@ -47,6 +47,7 @@ public class ImportedGraph {
         }
         catch(IOException e){
             System.out.println(e);
+            return false;
         }
 
         return true;
@@ -89,8 +90,9 @@ public class ImportedGraph {
         try {
             Files.writeString(Paths.get(filepath), toString(), StandardCharsets.UTF_8);
         }
-        catch(IOException e){
-            System.out.println(e);
+        catch(Exception e){
+            System.out.println("An error has occurred, check your filepath!");
+            return false;
         }
 
         return true;
@@ -148,7 +150,7 @@ public class ImportedGraph {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Exporting Graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Function that exports the imported graph object to be output as a DOT file
-    public void outputDOTGraph(String filePath){
+    public boolean outputDOTGraph(String filePath){
 
         //Creates importer object to facillitate translating dot format to graph variable
         DOTExporter<String, DefaultEdge> dotexp = new DOTExporter<>(vertexName -> vertexName);
@@ -163,9 +165,13 @@ public class ImportedGraph {
 
             wr.close(); //closes writer to prevent memory leaks
         }
-        catch(IOException e){
-            System.out.println(e);
+        catch(Exception e){
+            System.out.println("An error has occurred, check your filepath!");
+            return false;
         }
+
+        return true;
+
     }
 
     public boolean outputGraphics(String filePath, String format) throws IOException {
@@ -198,7 +204,13 @@ public class ImportedGraph {
         switch(format){
 
             case "PNG":
-                Graphviz.fromGraph(vizg).width(900).render(Format.PNG).toFile(new File(filePath + ".png"));
+                try {
+                    Graphviz.fromGraph(vizg).width(900).render(Format.PNG).toFile(new File(filePath + ".png"));
+                }
+                catch(Exception e){
+                    System.out.println("An error has occurred, check your filepath!");
+                    return false;
+                }
             break;
 
             default:
