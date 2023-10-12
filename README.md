@@ -8,8 +8,10 @@ The program is primarily a single class known as ImportedGraph that contains all
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
-## Maven Setup
-This program uses Maven to handle its dependencies. To get started, access the folder of the program in your terminal and compile using the command.<br><br>
+## Project Setup with Maven 
+This project is compiled using Java JDK Version 20.0.2 To make sure the program compiles properly, make sure you are using the correct SDK!<br><br>
+This program uses Maven to handle its dependencies. <br><br>
+To get started, access the folder named "CSE-464-CourseProject" in the program in your terminal and compile using the command.<br><br>
 ```mvn package```<br><br>
 This will download all necessary dependencies for the code
 
@@ -166,7 +168,7 @@ Also adds test cases for relevant functions
 
 
 ## Test Notes
-Some tests compare the output of two files for equality. Sometimes, a file that is being compared may have different line separators than the other file. If tests are failing due to files not being the same make sure to make them the same.<br><br>
+Some tests compare the output of two files for equality. Sometimes, a file that is being compared may have different line separators than the other file. If tests are failing due to files not being the same make sure to make the line separators the same.<br><br>
 To do this in IntelliJ: First, start by opening the file and selecting the file you want to check the line separators on and go to the bottom of the IDE and select the second option among the tabs.<br><br>
 ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/013788c1-ca54-49ef-a72e-ffeb0638ec66) <br><br>
 You can change the file endings to either LF, CR, or CRLF. You just have to make sure that they all share the same ending, but I recommend changing them to LF as that is what they were tested with during development.
