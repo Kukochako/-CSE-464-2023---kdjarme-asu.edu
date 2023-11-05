@@ -24,5 +24,5 @@ jobs:
         distribution: 'temurin'
     - name: Build with Maven
       run: |
-        cd -CSE-464-2023---kdjarme-asu.edu/CSE-464-CourseProject/
+        cd CSE-464-CourseProject/
         mvn test
