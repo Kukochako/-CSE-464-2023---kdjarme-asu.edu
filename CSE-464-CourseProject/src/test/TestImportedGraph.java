@@ -263,4 +263,81 @@ public class TestImportedGraph {
         }
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PART 2 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Test
+    // removes a new valid vertex to the graph
+    public void testRemoveNodeValid(){
+
+        String result = ig.removeNode("a");
+        String expected = "a successfully removed!";
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    // Attempt to add an invalid vertex to the graph
+    public void testRemoveNodeInvalid(){
+
+        String result = ig.removeNode("q");
+        String expected = "Failed to remove! Vertex q does not exist!";
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    //Attempts to remove a list of old vertices to the graph
+    public void testRemoveNodesValid(){
+
+        String[] newNodes = {"a","b","c","d"};
+        ig.removeNodes(newNodes);
+
+        int expected = 0;
+
+        assertEquals(expected, ig.getAmountOfVertices());
+
+    }
+
+    @Test
+    //Attempts to remove a list of some new and some old vertices to the graph
+    public void testRemoveNodesSemiValid(){
+
+        String[] newNodes = {"e","a","g","b","i"};
+        ig.removeNodes(newNodes);
+
+        int expected = 2;
+
+        assertEquals(expected, ig.getAmountOfVertices());
+
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 3 Tests~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @Test
+    //adds a new edge to the graph
+    public void testRemoveEdgeValid(){
+
+        ig.removeEdge("b", "c");
+
+        int expected = 3;
+
+        assertEquals(expected, ig.getAmountOfEdges());
+
+    }
+
+    @Test
+    //adds an existing edge to the graph
+    public void testRemoveEdgeInValid(){
+
+        ig.removeEdge("a", "q");
+
+        int expected = 4;
+
+        assertEquals(expected, ig.getAmountOfEdges());
+
+    }
+
 }

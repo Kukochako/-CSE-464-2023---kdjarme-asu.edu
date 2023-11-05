@@ -124,8 +124,6 @@ public class ImportedGraph {
     //Function that allows a user to add multiple nodes at once to the imported graph
     public void addNodes(String[] labels){
 
-        Set<String> allVertices = g.vertexSet();
-
         //if all vertex to be added already exists, do not append it to the graph
         for(String vertex : labels) {
             System.out.println(addNode(vertex));
@@ -238,4 +236,44 @@ public class ImportedGraph {
 
     }
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PART 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~Feature 1: Removing Nodes and Edges~~~~~~~~~~~~~~~~~~~~~~~//
+
+    //Function that allows a user to remove a node to the imported graph
+    public String removeNode(String label){
+
+        Set<String> allVertices = g.vertexSet();
+        //if all vertex to be added already exists, do not append it to the graph
+        if(!allVertices.contains(label)){
+            return "Failed to remove! Vertex " + label + " does not exist!";
+        }
+        else{
+            g.removeVertex(label);
+        }
+
+        return label + " successfully removed!";
+    }
+
+    //Function that allows a user to remove multiple nodes at once to the imported graph
+    public void removeNodes(String[] labels){
+
+        //if all vertex to be added already exists, do not append it to the graph
+        for(String vertex : labels) {
+            System.out.println(removeNode(vertex));
+        }
+    }
+
+    //Removes an edge to and from specified nodes
+    public void removeEdge(String srcLabel, String dstLabel){
+
+        //Check if the edge relationship makes sense
+        if(!g.containsEdge(srcLabel, dstLabel)){
+            System.out.println("Failed to remove edge. " + srcLabel + " -> " + dstLabel + " does not exist!");
+        }
+        else{ //If edge makes sense, remove its relationship to the graph
+            g.removeEdge(srcLabel, dstLabel);
+            System.out.println("Edge: " + srcLabel + " -> " + dstLabel + " was removed successfully!");
+        }
+
+    }
 }
