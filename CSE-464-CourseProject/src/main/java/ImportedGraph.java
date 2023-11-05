@@ -8,6 +8,7 @@ import java.io.*;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
@@ -88,6 +89,11 @@ public class ImportedGraph {
     public boolean outputGraph(String filepath) throws IOException {
 
         try {
+            if(!Files.exists(Path.of(filepath))) {
+                System.out.println("An error has occurred, check your filepath!");
+                return false;
+            }
+
             Files.writeString(Paths.get(filepath), toString(), StandardCharsets.UTF_8);
         }
         catch(Exception e){
@@ -157,6 +163,10 @@ public class ImportedGraph {
         //dotexp.setVertexAttributeProvider();
 
         try {
+            if(!Files.exists(Path.of(filePath))) {
+                System.out.println("An error has occurred, check your filepath!");
+                return false;
+            }
             //reads dotfile from input and creates reader to process it
             File myFile = new File(filePath);
             FileWriter wr = new FileWriter(myFile);
@@ -175,6 +185,12 @@ public class ImportedGraph {
     }
 
     public boolean outputGraphics(String filePath, String format) throws IOException {
+
+            //checks if given directory exists
+            if(!Files.exists(Path.of(filePath))) {
+                System.out.println("An error has occurred, check your filepath!");
+                return false;
+            }
 
             //Creates Graph in format of viz-graph specifications
             MutableGraph vizg = mutGraph().setDirected(true);//mutgraph("exportedGraph").directed();
@@ -205,7 +221,7 @@ public class ImportedGraph {
 
             case "PNG":
                 try {
-                    Graphviz.fromGraph(vizg).width(900).render(Format.PNG).toFile(new File(filePath + ".png"));
+                    Graphviz.fromGraph(vizg).width(900).render(Format.PNG).toFile(new File(filePath + "outputOutputGraphics.png"));
                 }
                 catch(Exception e){
                     System.out.println("An error has occurred, check your filepath!");

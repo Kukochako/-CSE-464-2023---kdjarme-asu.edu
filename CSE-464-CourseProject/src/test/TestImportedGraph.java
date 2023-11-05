@@ -114,7 +114,7 @@ public class TestImportedGraph {
     public void testOutputGraphFalse() throws IOException {
 
         try {
-            assertFalse(ig.outputGraph("\\\\\\!"));
+            assertFalse(ig.outputGraph("/BADPATH"));
         }
         catch(IOException e){
             System.out.println(e);
@@ -223,7 +223,7 @@ public class TestImportedGraph {
     //tests outputDotGraph if a bad filepath is entered
     public void testOutputDOTGraphFalse() {
 
-        assertFalse(ig.outputDOTGraph("\\\\\\"));
+        assertFalse(ig.outputDOTGraph("NOREAL"));
 
     }
 
@@ -232,7 +232,7 @@ public class TestImportedGraph {
     public void testOutputGraphics() throws IOException {
 
         try {
-            assertTrue(ig.outputGraphics("src/outputs/outputOutputGraphics", "PNG"));
+            assertTrue(ig.outputGraphics("src/outputs/", "PNG"));
         }
         catch(IOException e){
             System.out.println(e);
@@ -244,7 +244,7 @@ public class TestImportedGraph {
     public void testOutputGraphicsFalsePath() throws IOException {
 
         try {
-            assertFalse(ig.outputGraphics("\\\\", "PNG"));
+            assertFalse(ig.outputGraphics("/NOTREAL", "PNG"));
         }
         catch(IOException e){
             System.out.println(e);
