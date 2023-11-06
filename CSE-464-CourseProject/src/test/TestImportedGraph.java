@@ -361,7 +361,7 @@ public class TestImportedGraph {
 
         String expected = "a -> b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("a","d"));
+        assertEquals(expected, ig.GraphSearch("a","d").toString());
 
     }
 
@@ -371,7 +371,7 @@ public class TestImportedGraph {
 
         String expected = "a";
 
-        assertEquals(expected, ig.GraphSearch("a","a"));
+        assertEquals(expected, ig.GraphSearch("a","a").toString());
 
     }
 
@@ -387,7 +387,7 @@ public class TestImportedGraph {
 
         String expected = "a -> e -> f";
 
-        assertEquals(expected, ig.GraphSearch("a","f"));
+        assertEquals(expected, ig.GraphSearch("a","f").toString());
 
     }
 
@@ -397,7 +397,7 @@ public class TestImportedGraph {
 
         String expected = "b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("b","d"));
+        assertEquals(expected, ig.GraphSearch("b","d").toString());
 
     }
 
@@ -405,10 +405,7 @@ public class TestImportedGraph {
     @Test
     public void testBFSInvalid(){
 
-        String expected = "No Path from a to f!";
-
-        assertEquals(expected, ig.GraphSearch("a","f"));
-
+        assertNull(ig.GraphSearch("a","f"));
     }
 
 }

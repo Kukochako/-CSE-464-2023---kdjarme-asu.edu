@@ -299,7 +299,7 @@ public class ImportedGraph {
     //~~~~~~~~~~~~~~~~~~~~~~~Feature 2: BFS to find node ~~~~~~~~~~~~~~~~~~~~~~~//
     //Navigates graph starting from src node to find dst node and prints
     //out the path it took to get there
-    public String GraphSearch(String src, String dst){
+    public MyPath GraphSearch(String src, String dst){
 
         MyPath resultPath= new MyPath();
 
@@ -345,7 +345,7 @@ public class ImportedGraph {
 
         //if the no path to the dst was found
         if(!explored.contains(dst))
-            return "No Path from " + src + " to " + dst + "!";
+            return null;
         else{ //if path was found, trim the explored nodes to only contains the one relevant to the path
 
             String currently = explored.get(explored.size()-1);
@@ -369,7 +369,7 @@ public class ImportedGraph {
 
             for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
 
-            return resultPath.toString();
+            return resultPath;
         }
 
     }
