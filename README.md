@@ -6,6 +6,7 @@ The program is primarily a single class known as ImportedGraph that contains all
 ## Table of Contents
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
+  - [Additional Links for Part 2]()
   - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#project-discrepancies)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
@@ -243,6 +244,10 @@ Also implemented preliminary test cases for related functions.
      
      ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/89edc56c-e5e1-4c88-bb2d-5043b34f3017)
 <br><br>
+
+## Additional Links for Part 2
+  - [Link to successful merge after conflict](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/f98600df2725d20aebe98da073b8eef2bf6975a1)
+  - [Link to Workflow Tab for Continuous Integration](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/actions)
 
 ## Project Discrepancies
   - Part 2 requires the creation of a Path class. For my project, I use a library that already contains the definition for Path object. As a result, I opted to name the Path class that I needed to create MyPath.
