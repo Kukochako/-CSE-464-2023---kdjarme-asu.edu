@@ -10,6 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import static guru.nidi.graphviz.model.Factory.*;
@@ -26,6 +29,22 @@ public class ImportedGraph {
 
     public int getAmountOfEdges(){
         return g.edgeSet().size();
+    }
+
+    public List<String> getEdgesOf(String src){ //Set<String>
+
+        List<String> returnMe = new ArrayList<>();
+        Set<DefaultEdge> edges = g.outgoingEdgesOf(src);
+
+        for(Object edge : edges){
+            String temp = edge.toString();
+            String[] tempArr = temp.split(":");
+
+            returnMe.add(tempArr[1].substring(1,tempArr[1].length()-1));
+        }
+
+        return returnMe;
+
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
@@ -276,4 +295,83 @@ public class ImportedGraph {
         }
 
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~Feature 2: BFS to find node ~~~~~~~~~~~~~~~~~~~~~~~//
+    //Navigates graph starting from src node to find dst node and prints
+    //out the path it took to get there
+    public String GraphSearch(String src, String dst){
+
+        MyPath resultPath= new MyPath();
+
+        List<String> explored = new ArrayList<String>();
+        List<String> searchQueue = new ArrayList<String>();
+
+        searchQueue.add(src);
+        explored.add(src);
+
+        //BFS
+        while(!searchQueue.isEmpty()){
+            String current = searchQueue.remove(0);
+
+            explored.add(current);
+            System.out.println(current);
+            //if current node is the one we need to find
+            if(current.equals(dst)){
+                //explored.add(current);
+
+                break;
+            }
+
+            //Grab all the edges for the current node
+            List<String> edges = new ArrayList<>();
+            Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(current);
+
+            for(Object edge : currentEdges){
+                String temp = edge.toString();
+                String[] tempArr = temp.split(":");
+
+                edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
+                //System.out.println(edge);
+            }
+
+            for(String edge : edges){
+                if(!explored.contains(edge)){
+                    //explored.add(edge);
+                    searchQueue.add(edge);
+                }
+            }
+
+        }
+
+        //if the no path to the dst was found
+        if(!explored.contains(dst))
+            return "No Path from " + src + " to " + dst + "!";
+        else{ //if path was found, trim the explored nodes to only contains the one relevant to the path
+
+            String currently = explored.get(explored.size()-1);
+            String before = explored.get(explored.size()-2);
+            int ref = 1;
+            while(!before.equals(src)){
+                //if edge to current node does exist, include it in path
+                currently = explored.get(explored.size()-ref);
+                before = explored.get(explored.size()-ref-1);
+
+                if (g.containsEdge(before, currently)) {
+                    ref = ref + 1;
+                }
+                else{
+                    explored.remove(explored.size()-ref-1);
+                }
+
+                System.out.println(before + " " + currently);
+
+            }
+
+            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
+
+            return resultPath.toString();
+        }
+
+    }
+
 }

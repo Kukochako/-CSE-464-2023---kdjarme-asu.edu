@@ -3,6 +3,7 @@ import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -337,6 +338,76 @@ public class TestImportedGraph {
         int expected = 4;
 
         assertEquals(expected, ig.getAmountOfEdges());
+
+    }
+
+    //test method used to get the edges of a node
+    @Test
+    public void testGetEdgesOf(){
+
+        ig.addEdge("a","c");
+        ig.addEdge("a","d");
+
+        List<String> edges = ig.getEdgesOf("a");
+
+        int expected = 3;
+
+        assertEquals(expected, edges.size());
+    }
+
+    //BFS valid search through a straight path
+    @Test
+    public void testBFSValidStriaght(){
+
+        String expected = "a -> b -> c -> d";
+
+        assertEquals(expected, ig.GraphSearch("a","d"));
+
+    }
+
+    //BFS valid search starting on destination
+    @Test
+    public void testBFSValidImmediate(){
+
+        String expected = "a";
+
+        assertEquals(expected, ig.GraphSearch("a","a"));
+
+    }
+
+    //BFS valid search where only one branch has the correct node
+    @Test
+    public void testBFSValidOneBranch(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "f");
+
+        String expected = "a -> e -> f";
+
+        assertEquals(expected, ig.GraphSearch("a","f"));
+
+    }
+
+    //BFS search where search starts in the middle of the graph
+    @Test
+    public void testBFSMiddle(){
+
+        String expected = "b -> c -> d";
+
+        assertEquals(expected, ig.GraphSearch("b","d"));
+
+    }
+
+    //BFS Search test where destination cannot be reached from source
+    @Test
+    public void testBFSInvalid(){
+
+        String expected = "No Path from a to f!";
+
+        assertEquals(expected, ig.GraphSearch("a","f"));
 
     }
 

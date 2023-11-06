@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Path {
+public class MyPath {
 
     //Class list that holds all the names of the nodes in the path
     private List<String> nodes = new ArrayList<String>();
