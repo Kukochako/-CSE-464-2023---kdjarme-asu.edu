@@ -6,8 +6,8 @@ The program is primarily a single class known as ImportedGraph that contains all
 ## Table of Contents
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
+  - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#project-discrepancies)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
-  - [Project Discrepancies]()
 
 ## Project Setup with Maven 
 This project is compiled using Java JDK Version 20.0.2 To make sure the program compiles properly, make sure you are using the correct SDK!<br><br>
@@ -27,8 +27,8 @@ Part 1 Features:
   - [Feature 4: Outputting Graphs](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-4---outputting-importedgraph-objects)
 
 Part 2 Features:
-  - [Feature 1: Removing Vertices and Edges]
-  - [Feature 2: Searching for Nodes]
+  - [Feature 1: Removing Vertices and Edges](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#feature-1---removing-vertices-and-edges)
+  - [Feature 2: Searching for Nodes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#feature-2---graph-searching-using-bfs-and-dfs)
 
 ## Part 1
 ### Feature 1 - Parsing a DOT File
