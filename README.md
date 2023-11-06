@@ -6,7 +6,7 @@ The program is primarily a single class known as ImportedGraph that contains all
 ## Table of Contents
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
-  - [Additional Links for Part 2]()
+  - [Additional Links for Part 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-2)
   - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#project-discrepancies)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
