@@ -6,7 +6,7 @@ The program is primarily a single class known as ImportedGraph that contains all
 ## Table of Contents
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
-  - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#project-discrepancies)
+  - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#project-discrepancies)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
 ## Project Setup with Maven 
@@ -27,8 +27,8 @@ Part 1 Features:
   - [Feature 4: Outputting Graphs](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-4---outputting-importedgraph-objects)
 
 Part 2 Features:
-  - [Feature 1: Removing Vertices and Edges](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#feature-1---removing-vertices-and-edges)
-  - [Feature 2: Searching for Nodes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/blob/main/README.md#feature-2---graph-searching-using-bfs-and-dfs)
+  - [Feature 1: Removing Vertices and Edges](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-1---removing-vertices-and-edges)
+  - [Feature 2: Searching for Nodes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-2---graph-searching-using-bfs-and-dfs)
 
 ## Part 1
 ### Feature 1 - Parsing a DOT File
