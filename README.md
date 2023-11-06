@@ -7,6 +7,7 @@ The program is primarily a single class known as ImportedGraph that contains all
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
+  - [Project Discrepancies]()
 
 ## Project Setup with Maven 
 This project is compiled using Java JDK Version 20.0.2 To make sure the program compiles properly, make sure you are using the correct SDK!<br><br>
@@ -19,11 +20,17 @@ This will download all necessary dependencies for the code
 This program's development is broken up into multiple features that are developed over time. The features and their documentation are noted in this section.
 
 ### Table of Contents
-  - [Feature 1](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-1---parsing-a-dot-file)
-  - [Feature 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-2---adding-vertices)
-  - [Feature 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-3---adding-edges)
-  - [Feature 4](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-4---outputting-importedgraph-objects)
+Part 1 Features:
+  - [Feature 1: Parsing a DOT File](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-1---parsing-a-dot-file)
+  - [Feature 2: Adding Vertices](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-2---adding-vertices)
+  - [Feature 3: Adding Edges](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-3---adding-edges)
+  - [Feature 4: Outputting Graphs](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-4---outputting-importedgraph-objects)
 
+Part 2 Features:
+  - [Feature 1: Removing Vertices and Edges]
+  - [Feature 2: Searching for Nodes]
+
+## Part 1
 ### Feature 1 - Parsing a DOT File
 <b>Link:</b> [Link to Feature 1 commit](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/0093cac456e4741939d79b4948c53eb850e1c94b)<br><br>
 <b>Description:</b> Focuses on developments made tot he  Allows for user to import graph data stored in dot format into program. Also created some baseline test cases for the functions implemented for feature 1 
@@ -164,8 +171,81 @@ Also adds test cases for relevant functions
      ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/30f74760-7537-4021-b794-8ece03039f24) <br><br>
      ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/e75eedc3-a9c6-4ad9-a7df-200e69eb1ec9) <br><br>
 
-     
+## Part 2
+### Feature 1 - Removing Vertices and Edges
+**Link:** [Link to Feature 1 commit](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/85f305ba43bb987c3454299c7be69b211f5234f7)
+**Description:** Allows for vertices to be added to the imported graphs. <br><br>
+Also implemented preliminary test cases for related functions.
 
+<b>public String removeNode(String label)</b><br>
+  * **Description:**
+     - Attempts to remove a node specfied by the parameter to the ImportedGraph instance
+   
+   * **Parameter(s):**
+     - String label - contains the name of the new vertex to be removed
+
+   * **Output:**
+     - Returns a string representing if the node was successfully removed.
+    
+   * **Example output:**
+     - First image contains a sample output if removing the node was successful. The second image contains a sample output if removing the node was not successful<br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/d45f0c26-0218-4e14-9def-032af1c7dc7d)<br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/6e02618b-10c9-4feb-9aba-ff8c0ddb93e6)<br><br>     
+
+<b>public String removeNodes(String[] label)</b><br>
+  * **Description:**
+     - Attempts to remove multiple nodes specfied by the parameter to the ImportedGraph instance
+   
+   * **Parameter(s):**
+     - String[] label - Array list containing the name of the vertices to be removed
+
+   * **Output:**
+     - Returns a string representing if the node was successfully added for each node that attempts to be added
+    
+   * **Example output:** <br><br>
+     - Containts example of some successful and some not successful attempts to remove a vertex through use of the removeNodes method <br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/eaf0dbb9-b8eb-414f-9c32-5ec89e0a749f) <br><br>
+
+<b>public void removeEdge(String srcLabel, String dstLabel)</b><br>
+  * **Description:**
+     - Attempts to remove an edge specfied by the parameters to the ImportedGraph instance. Starts by first trying to add the nodes to the ImportedGraph instance.
+   
+   * **Parameter(s):**
+     - String srcLabel - contains the name of the vertex where the edge will originate from
+     - String dstLabel - contains the name of the vertex where the edge will end at
+
+   * **Output:**
+     - No return value but successful attempt will result in the instance of ImportedGraph with a new edge and a failed attempt will result in reason being output to console
+    
+   * **Example output:**
+     - First image contains a sample output if adding the edge was successful. The second image contains a sample output if remove the node was not successful<br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/9e1ddef1-bfe9-4016-9a8a-63d6918e13cf) <br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/446765ea-a910-4597-850e-b8c021e8a82b) <br><br>
+
+### Feature 2 - Graph Searching using BFS and DFS
+**Link:** [Link to Feature 2 commit](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/6470e2af82dc75cb2c5080ccaf525a2e6595ac04)
+**Description:** Allows for searching a specified vertice starting from another vertice using BFS or DFS algorithm. <br><br>
+Also implemented preliminary test cases for related functions.
+
+<b>public MyPath GraphSearch(String src, String dst, Algorithm Algo)</b><br>
+  * **Description:**
+     - Attempts to search for a label starting the search from another specified label
+   
+   * **Parameter(s):**
+     - String srcLabel - contains the name of the vertex where the search will originate from
+     - String dstLabel - contains the name of the vertex where the search will end at
+
+   * **Output:**
+     - MyPath object that contains a path starting from the srcLabel to dstLabel. If a path from scrLabel to dstLabel cannot be found, null value will be returned.
+    
+   * **Example output:**
+     - Image contains a path representation of the MyPath object that gets returned. Output path is the same regardless of which algorithm is used.
+     
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/89edc56c-e5e1-4c88-bb2d-5043b34f3017)
+<br><br>
+
+## Project Discrepancies
+  - Part 2 requires the creation of a Path class. For my project, I use a library that already contains the definition for Path object. As a result, I opted to name the Path class that I needed to create MyPath.
 
 ## Test Notes
 Some tests compare the output of two files for equality. Sometimes, a file that is being compared may have different line separators than the other file. If tests are failing due to files not being the same make sure to make the line separators the same.<br><br>
