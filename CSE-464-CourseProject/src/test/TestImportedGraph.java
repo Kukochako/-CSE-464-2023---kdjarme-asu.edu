@@ -341,7 +341,7 @@ public class TestImportedGraph {
 
 
     }
-
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PART 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     //~~~~~~~~~~~~~~~Feature 2: DFS search~~~~~~~~~~~~~~//
 
     //tests DFS method using a graph in a straight line
@@ -352,7 +352,7 @@ public class TestImportedGraph {
 
         String expected = "a -> b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("a", "d").toString());
+        assertEquals(expected, ig.GraphSearch("a", "d", ImportedGraph.Algorithm.DFS).toString());
     }
 
     //tests DFS search where only one path is valid
@@ -367,7 +367,7 @@ public class TestImportedGraph {
 
         String expected = "a -> e -> f";
 
-        assertEquals(expected, ig.GraphSearch("a", "f").toString());
+        assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
     }
 
     //Tests DFS search when source node is the same as the destination node
@@ -376,7 +376,7 @@ public class TestImportedGraph {
 
         String expected = "a";
 
-        assertEquals(expected, ig.GraphSearch("a", "a").toString());
+        assertEquals(expected, ig.GraphSearch("a", "a", ImportedGraph.Algorithm.DFS).toString());
     }
 
     //Test DFS method searching from the middle
@@ -391,14 +391,14 @@ public class TestImportedGraph {
 
         String expected = "e -> f";
 
-        assertEquals(expected, ig.GraphSearch("e", "f").toString());
+        assertEquals(expected, ig.GraphSearch("e", "f", ImportedGraph.Algorithm.DFS).toString());
     }
 
     //Tests DFS search when source node cannot reach destination node
     @Test
     public void testDFSNoPath(){
 
-        assertNull(ig.GraphSearch("a", "f"));
+        assertNull(ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS));
 
     }
 
@@ -416,13 +416,14 @@ public class TestImportedGraph {
         assertEquals(expected, edges.size());
     }
 
+    //~~~~~~~~~~~~~~~Feature 2: DFS search~~~~~~~~~~~~~~//
     //BFS valid search through a straight path
     @Test
     public void testBFSValidStriaght(){
 
         String expected = "a -> b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("a","d").toString());
+        assertEquals(expected, ig.GraphSearch("a","d", ImportedGraph.Algorithm.BFS).toString());
 
     }
 
@@ -432,7 +433,7 @@ public class TestImportedGraph {
 
         String expected = "a";
 
-        assertEquals(expected, ig.GraphSearch("a","a").toString());
+        assertEquals(expected, ig.GraphSearch("a","a", ImportedGraph.Algorithm.BFS).toString());
 
     }
 
@@ -448,7 +449,7 @@ public class TestImportedGraph {
 
         String expected = "a -> e -> f";
 
-        assertEquals(expected, ig.GraphSearch("a","f").toString());
+        assertEquals(expected, ig.GraphSearch("a","f", ImportedGraph.Algorithm.BFS).toString());
 
     }
 
@@ -458,7 +459,7 @@ public class TestImportedGraph {
 
         String expected = "b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("b","d").toString());
+        assertEquals(expected, ig.GraphSearch("b","d", ImportedGraph.Algorithm.BFS).toString());
 
     }
 
@@ -466,7 +467,7 @@ public class TestImportedGraph {
     @Test
     public void testBFSInvalid(){
 
-        assertNull(ig.GraphSearch("a","f"));
+        assertNull(ig.GraphSearch("a","f", ImportedGraph.Algorithm.BFS));
     }
 
 }

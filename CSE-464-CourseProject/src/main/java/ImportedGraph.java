@@ -305,15 +305,13 @@ public class ImportedGraph {
     //out the path it took to get there
     public MyPath GraphSearch(String src, String dst, Algorithm Algo){
 
-        switch(algo){
+        switch(Algo){
 
             case BFS:
                 return BFS(src, dst);
-            break;
                 
             case DFS:
-                return masterDFS(src, dst); 
-            break;
+                return masterDFS(src, dst);
 
             default:
                 return null;
@@ -322,7 +320,7 @@ public class ImportedGraph {
 
     }
 
-    public MyPath BST(String src, String dst){
+    public MyPath BFS(String src, String dst){
 
         MyPath resultPath= new MyPath();
 
@@ -383,7 +381,7 @@ public class ImportedGraph {
                     ref = ref + 1;
                 }
                 else{
-                    discovered.remove(discovered.size()-ref-1);
+                    explored.remove(explored.size()-ref-1);
                 }
 
                 System.out.println(before + " " + currently);
@@ -392,7 +390,7 @@ public class ImportedGraph {
         }
 
             
-            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(edplored.get(i)); }
+            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
 
             return resultPath;
     }
@@ -429,14 +427,13 @@ public class ImportedGraph {
                     discovered.remove(discovered.size()-ref-1);
                 }
 
-                //System.out.println(before + " " + currently);
-
             }
 
-            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
-
-            return resultPath;
         }
+
+        for(int i = 0; i < discovered.size(); i++){ resultPath.addNode(discovered.get(i)); }
+
+        return resultPath;
 
     }
 
