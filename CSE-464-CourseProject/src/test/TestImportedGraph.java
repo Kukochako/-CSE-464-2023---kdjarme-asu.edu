@@ -272,6 +272,7 @@ public class TestImportedGraph {
     public void testRemoveNodeValid(){
 
         String result = ig.removeNode("a");
+        System.out.println(result);
         String expected = "a successfully removed!";
 
         assertEquals(expected, result);
@@ -283,7 +284,10 @@ public class TestImportedGraph {
     public void testRemoveNodeInvalid(){
 
         String result = ig.removeNode("q");
+        System.out.println(result);
+
         String expected = "Failed to remove! Vertex q does not exist!";
+
 
         assertEquals(expected, result);
 
@@ -366,6 +370,8 @@ public class TestImportedGraph {
         ig.addEdge("e", "f");
 
         String expected = "a -> e -> f";
+
+        System.out.println(ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
 
         assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
     }

@@ -320,7 +320,7 @@ public class ImportedGraph {
 
     }
 
-    public MyPath BFS(String src, String dst){
+    private MyPath BFS(String src, String dst){
 
         MyPath resultPath= new MyPath();
 
@@ -396,7 +396,7 @@ public class ImportedGraph {
     }
 
     //Feature 2: DFS Search
-    public MyPath masterDFS(String src, String dst){
+    private MyPath masterDFS(String src, String dst){
 
         List<String> discovered = new ArrayList<>();
         MyPath resultPath = new MyPath();
