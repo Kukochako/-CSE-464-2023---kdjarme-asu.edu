@@ -19,6 +19,10 @@ import static guru.nidi.graphviz.model.Factory.*;
 
 public class ImportedGraph {
 
+    //Enumeration to determine which algorithm will be used to search
+    public enum Algorithm{
+        BFS, DFS
+    }
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
@@ -299,7 +303,26 @@ public class ImportedGraph {
     //~~~~~~~~~~~~~~~~~~~~~~~Feature 2: BFS to find node ~~~~~~~~~~~~~~~~~~~~~~~//
     //Navigates graph starting from src node to find dst node and prints
     //out the path it took to get there
-    public MyPath GraphSearch(String src, String dst){
+    public MyPath GraphSearch(String src, String dst, Algorithm Algo){
+
+        switch(algo){
+
+            case BFS:
+                return BFS(src, dst);
+            break;
+                
+            case DFS:
+                return masterDFS(src, dst); 
+            break;
+
+            default:
+                return null;
+
+        }
+
+    }
+
+    public MyPath BST(String src, String dst){
 
         MyPath resultPath= new MyPath();
 
@@ -360,10 +383,53 @@ public class ImportedGraph {
                     ref = ref + 1;
                 }
                 else{
-                    explored.remove(explored.size()-ref-1);
+                    discovered.remove(discovered.size()-ref-1);
                 }
 
                 System.out.println(before + " " + currently);
+
+            }
+        }
+
+            
+            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(edplored.get(i)); }
+
+            return resultPath;
+    }
+
+    //Feature 2: DFS Search
+    public MyPath masterDFS(String src, String dst){
+
+        List<String> discovered = new ArrayList<>();
+        MyPath resultPath = new MyPath();
+        discovered = DFS(resultPath, discovered, src, dst);
+
+        resultPath = new MyPath();
+        for(String node : discovered)System.out.println(node);
+        //System.out.println(resultPath);
+
+        //Trim resultPath to only contain relevant path
+        //if the no path to the dst was found
+        if(!discovered.contains(dst))
+            return null;
+        else if((discovered.size() > 1)){ //if path was found, trim the explored nodes to only contains the one relevant to the path
+
+            String currently = discovered.get(discovered.size()-1);
+            String before = discovered.get(discovered.size()-2);
+            int ref = 1;
+            while(!before.equals(src)){
+                //if edge to current node does exist, include it in path
+                currently = discovered.get(discovered.size()-ref);
+                before = discovered.get(discovered.size()-ref-1);
+
+                if (g.containsEdge(before, currently)) {
+                    ref = ref + 1;
+                }
+                else{
+                    discovered.remove(discovered.size()-ref-1);
+                }
+
+                //System.out.println(before + " " + currently);
 
             }
 
@@ -371,6 +437,40 @@ public class ImportedGraph {
 
             return resultPath;
         }
+
+    }
+
+    private List<String> DFS(MyPath returnMe, List<String> discovered, String src, String dst){
+
+        discovered.add(src);
+        returnMe.addNode(src);
+        //System.out.println(src);
+        //Base case
+        if(src.equals(dst)){
+            return discovered;
+        }
+
+        //Grab all the edges for the current node
+        List<String> edges = new ArrayList<>();
+        Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(src);
+
+        for(Object edge : currentEdges){
+            String temp = edge.toString();
+            String[] tempArr = temp.split(":");
+
+            edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
+            //System.out.println(edge);
+        }
+
+        for(String edge : edges){
+            if(!discovered.contains(edge)){
+                DFS(returnMe, discovered, edge, dst);
+            }
+
+            //returnMe.removeNode(edge);
+        }
+
+        return discovered;
 
     }
 
