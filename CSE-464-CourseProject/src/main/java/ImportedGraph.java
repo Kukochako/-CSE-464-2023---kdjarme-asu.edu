@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static guru.nidi.graphviz.model.Factory.*;
@@ -276,4 +278,85 @@ public class ImportedGraph {
         }
 
     }
+
+    //Feature 2: DFS Search
+    public MyPath GraphSearch(String src, String dst){
+
+        List<String> discovered = new ArrayList<>();
+        MyPath resultPath = new MyPath();
+        discovered = DFS(resultPath, discovered, src, dst);
+
+        resultPath = new MyPath();
+        for(String node : discovered)System.out.println(node);
+        System.out.println(resultPath);
+
+
+        //Trim resultPath to only contain relevant path
+        //if the no path to the dst was found
+        if(!discovered.contains(dst))
+            return null;
+        else if((discovered.size() > 1)){ //if path was found, trim the explored nodes to only contains the one relevant to the path
+
+            String currently = discovered.get(discovered.size()-1);
+            String before = discovered.get(discovered.size()-2);
+            int ref = 1;
+            while(!before.equals(src)){
+                //if edge to current node does exist, include it in path
+                currently = discovered.get(discovered.size()-ref);
+                before = discovered.get(discovered.size()-ref-1);
+
+                if (g.containsEdge(before, currently)) {
+                    ref = ref + 1;
+                }
+                else{
+                    discovered.remove(discovered.size()-ref-1);
+                }
+
+                System.out.println(before + " " + currently);
+
+            }
+
+        }
+
+        for(int i = 0; i < discovered.size(); i++){ resultPath.addNode(discovered.get(i)); }
+
+        return resultPath;
+    }
+
+
+
+    private List<String> DFS(MyPath returnMe, List<String> discovered, String src, String dst){
+
+        discovered.add(src);
+        returnMe.addNode(src);
+        //System.out.println(src);
+        //Base case
+        if(src.equals(dst)){
+            return discovered;
+        }
+
+        //Grab all the edges for the current node
+        List<String> edges = new ArrayList<>();
+        Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(src);
+
+        for(Object edge : currentEdges){
+            String temp = edge.toString();
+            String[] tempArr = temp.split(":");
+
+            edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
+            //System.out.println(edge);
+        }
+
+        for(String edge : edges){
+            if(!discovered.contains(edge)){
+                DFS(returnMe, discovered, edge, dst);
+            }
+
+            //returnMe.removeNode(edge);
+        }
+
+        return discovered;
+
+    }
+
 }

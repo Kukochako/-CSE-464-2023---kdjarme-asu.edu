@@ -1,16 +1,15 @@
-import org.apache.commons.io.FileUtils;
 import org.junit.*;
 
 import static org.junit.Assert.*;
 
 public class TestPath {
 
-    Path p; //Local path used for testing
+    MyPath p; //Local path used for testing
 
     @Before
     public void setUp(){
 
-        p = new Path();
+        p = new MyPath();
 
         p.addNode("a");
         p.addNode("b");

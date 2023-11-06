@@ -338,6 +338,67 @@ public class TestImportedGraph {
 
         assertEquals(expected, ig.getAmountOfEdges());
 
+
+    }
+
+    //~~~~~~~~~~~~~~~Feature 2: DFS search~~~~~~~~~~~~~~//
+
+    //tests DFS method using a graph in a straight line
+    @Test
+    public void testDFSStraight(){
+
+        //System.out.println(p);
+
+        String expected = "a -> b -> c -> d";
+
+        assertEquals(expected, ig.GraphSearch("a", "d").toString());
+    }
+
+    //tests DFS search where only one path is valid
+    @Test
+    public void testDFSOneValidPath(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "f");
+
+        String expected = "a -> e -> f";
+
+        assertEquals(expected, ig.GraphSearch("a", "f").toString());
+    }
+
+    //Tests DFS search when source node is the same as the destination node
+    @Test
+    public void testDFSImmediate(){
+
+        String expected = "a";
+
+        assertEquals(expected, ig.GraphSearch("a", "a").toString());
+    }
+
+    //Test DFS method searching from the middle
+    @Test
+    public void testDFSMiddlePath(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "f");
+
+        String expected = "e -> f";
+
+        assertEquals(expected, ig.GraphSearch("e", "f").toString());
+    }
+
+    //Tests DFS search when source node cannot reach destination node
+    @Test
+    public void testDFSNoPath(){
+
+        assertNull(ig.GraphSearch("a", "f"));
+
     }
 
 }

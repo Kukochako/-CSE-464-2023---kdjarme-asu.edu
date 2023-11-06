@@ -1,0 +1,13 @@
+Number of Vertices: 4
+Vertex Names:
+a
+b
+c
+d
+
+Number of Edges: 4
+Edge Directions:
+a -> b
+b -> c
+c -> d
+d -> a
