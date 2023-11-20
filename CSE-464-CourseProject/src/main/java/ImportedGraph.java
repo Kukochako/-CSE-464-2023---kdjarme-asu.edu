@@ -24,21 +24,21 @@ public class ImportedGraph {
         BFS, DFS
     }
     //Instance variable that stores the value of the parsed graph
-    private org.jgrapht.Graph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
+    private org.jgrapht.Graph<String, DefaultEdge> classGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~ACCESSORS~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     public int getAmountOfVertices(){
-        return g.vertexSet().size();
+        return classGraph.vertexSet().size();
     }
 
     public int getAmountOfEdges(){
-        return g.edgeSet().size();
+        return classGraph.edgeSet().size();
     }
 
     public List<String> getEdgesOf(String src){ //Set<String>
 
         List<String> returnMe = new ArrayList<>();
-        Set<DefaultEdge> edges = g.outgoingEdgesOf(src);
+        Set<DefaultEdge> edges =classGraph.outgoingEdgesOf(src);
 
         for(Object edge : edges){
             String temp = edge.toString();
@@ -65,7 +65,7 @@ public class ImportedGraph {
             File myFile = new File(filePath);
             FileReader rd = new FileReader(myFile);
 
-            dotimp.importGraph(g, rd); //imports dotfile data into graph variable
+            dotimp.importGraph(classGraph, rd); //imports dotfile data into graph variable
 
             rd.close(); //closes reader to prevent memory leaks
         }
@@ -84,7 +84,7 @@ public class ImportedGraph {
         String returnMe = ""; //String that will contain the compiled information of the graph
 
         //grab all vertices and return them in proper string format
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         returnMe += "Number of Vertices: " + allVertices.size() + "\n";
         returnMe += "Vertex Names:\n";
         for(String vertex : allVertices ){
@@ -92,7 +92,7 @@ public class ImportedGraph {
         }
 
         //grab all edges and return them in proper string format
-        Set<DefaultEdge> allEdges = g.edgeSet();
+        Set<DefaultEdge> allEdges =classGraph.edgeSet();
         returnMe += "\nNumber of Edges: " + allEdges.size() + "\n";
         returnMe += "Edge Directions:\n";
         for(Object edge : allEdges){
@@ -132,13 +132,13 @@ public class ImportedGraph {
     //Function that allows a user to add a node to the imported graph
     public String addNode(String label){
 
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         //if all vertex to be added already exists, do not append it to the graph
         if(allVertices.contains(label)){
             return "Failed to add! Vertex " + label + " already exists!";
         }
         else{
-            g.addVertex(label);
+           classGraph.addVertex(label);
         }
 
         return label + " successfully added!";
@@ -164,11 +164,11 @@ public class ImportedGraph {
         addNodes(sources);
 
         //Then check if the edge relationship makes sense
-        if(g.containsEdge(srcLabel, dstLabel)){
+        if(classGraph.containsEdge(srcLabel, dstLabel)){
             System.out.println("Failed to add edge. " + srcLabel + " -> " + dstLabel + " already exists!");
         }
         else{ //If edge makes sense, add its relationship to the graph
-            g.addEdge(srcLabel, dstLabel);
+           classGraph.addEdge(srcLabel, dstLabel);
             System.out.println("New edge: " + srcLabel + " -> " + dstLabel + " was added successfully!");
         }
 
@@ -192,7 +192,7 @@ public class ImportedGraph {
             File myFile = new File(filePath);
             FileWriter wr = new FileWriter(myFile);
 
-            dotexp.exportGraph(g,wr); //exports dotfile data into graph variable
+            dotexp.exportGraph(classGraph,wr); //exports dotfile data into graph variable
 
             wr.close(); //closes writer to prevent memory leaks
         }
@@ -217,14 +217,14 @@ public class ImportedGraph {
             MutableGraph vizg = mutGraph().setDirected(true);//mutgraph("exportedGraph").directed();
 
             //adds all vertices as nodes to the vizgraph
-            Set<String> allVertices = g.vertexSet();
+            Set<String> allVertices =classGraph.vertexSet();
             for(String vertex : allVertices ) {
                 Node newNode = node(vertex);
                 vizg.add(newNode);
             }
 
             //adds all edges to the vizgraph
-            Set<DefaultEdge> allEdges = g.edgeSet();
+            Set<DefaultEdge> allEdges =classGraph.edgeSet();
             for(Object edge : allEdges){
 
                 //Grabs the name of the nodes
@@ -265,13 +265,13 @@ public class ImportedGraph {
     //Function that allows a user to remove a node to the imported graph
     public String removeNode(String label){
 
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         //if all vertex to be added already exists, do not append it to the graph
         if(!allVertices.contains(label)){
             return "Failed to remove! Vertex " + label + " does not exist!";
         }
         else{
-            g.removeVertex(label);
+           classGraph.removeVertex(label);
         }
 
         return label + " successfully removed!";
@@ -290,11 +290,11 @@ public class ImportedGraph {
     public void removeEdge(String srcLabel, String dstLabel){
 
         //Check if the edge relationship makes sense
-        if(!g.containsEdge(srcLabel, dstLabel)){
+        if(!classGraph.containsEdge(srcLabel, dstLabel)){
             System.out.println("Failed to remove edge. " + srcLabel + " -> " + dstLabel + " does not exist!");
         }
         else{ //If edge makes sense, remove its relationship to the graph
-            g.removeEdge(srcLabel, dstLabel);
+           classGraph.removeEdge(srcLabel, dstLabel);
             System.out.println("Edge: " + srcLabel + " -> " + dstLabel + " was removed successfully!");
         }
 
@@ -344,7 +344,7 @@ public class ImportedGraph {
 
             //Grab all the edges for the current node
             List<String> edges = new ArrayList<>();
-            Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(current);
+            Set<DefaultEdge> currentEdges =classGraph.outgoingEdgesOf(current);
 
             for(Object edge : currentEdges){
                 String temp = edge.toString();
@@ -381,7 +381,7 @@ public class ImportedGraph {
                 currently = explored.get(explored.size()-ref);
                 before = explored.get(explored.size()-ref-1);
 
-                if (g.containsEdge(before, currently)) {
+                if (classGraph.containsEdge(before, currently)) {
                     ref = ref + 1;
                 }
                 else{
@@ -431,7 +431,7 @@ public class ImportedGraph {
                 /*if(g.containsEdge(before, dst)){
                     while(!discovered.get(discovered.size()-ref).equals(dst)){ discovered.remove(discovered.size()-ref); }
                 }*/
-                if (g.containsEdge(before, currently)) {
+                if (classGraph.containsEdge(before, currently)) {
                     ref += 1;
                 }
                 else{
@@ -461,7 +461,7 @@ public class ImportedGraph {
 
         //Grab all the edges for the current node
         List<String> edges = new ArrayList<>();
-        Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(src);
+        Set<DefaultEdge> currentEdges =classGraph.outgoingEdgesOf(src);
 
         for(Object edge : currentEdges){
             String temp = edge.toString();
