@@ -311,7 +311,7 @@ public class ImportedGraph {
                 return BFS(src, dst);
                 
             case DFS:
-                return masterDFS(src, dst);
+                return DFS(src, dst);
 
             default:
                 return null;
@@ -344,26 +344,17 @@ public class ImportedGraph {
             }
 
             //Grab all the edges for the current node
-            List<String> edges = new ArrayList<>();
-            Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
+            List<String> nodes = getAdjacentNodes(current);
 
-            for(Object edge : currentEdges){
-                String temp = edge.toString();
-                String[] tempArr = temp.split(":");
-
-                edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
-                //System.out.println(edge);
-            }
-
-            if(edges.contains(dst)){
+            if(nodes.contains(dst)){
                 explored.add(dst);
                 break;
             }
 
-            for(String edge : edges){
-                if(!explored.contains(edge) && !explored.contains(dst)){
+            for(String adjacentNode : nodes){
+                if(!explored.contains(adjacentNode) && !explored.contains(dst)){
                     //explored.add(edge);
-                    searchQueue.add(edge);
+                    searchQueue.add(adjacentNode);
                 }
             }
 
@@ -379,7 +370,7 @@ public class ImportedGraph {
             return resultPath;
     }
 
-    private MyPath masterDFS(String src, String dst){
+    private MyPath DFS(String src, String dst){
         MyPath resultPath= new MyPath();
 
         //If the src node is the destination node just return the path with only the src
@@ -400,22 +391,13 @@ public class ImportedGraph {
             System.out.println(current);
 
             //Grab all the edges for the current node
-            List<String> edges = new ArrayList<>();
-            Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
-
-            for (Object edge : currentEdges) {
-                String temp = edge.toString();
-                String[] tempArr = temp.split(":");
-
-                edges.add(tempArr[1].substring(1, tempArr[1].length() - 1));
-                //System.out.println(edge);
-            }
+            List<String> nodes = getAdjacentNodes(current);
 
             if(!explored.contains(current)){
                 explored.add(current);
-                for (String edge : edges) {
+                for (String adjacentNode : nodes) {
 
-                    searchQueue.add(edge); //push data to top of stack
+                    searchQueue.add(adjacentNode); //push data to top of stack
 
                 }
             }
@@ -429,6 +411,8 @@ public class ImportedGraph {
 
         return resultPath;
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Extaction Methods~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //builds optimal path by reviewing all the nodes visited and removing unneccessary ones
     private List<String> buildOptimalPath(List<String> explored, String src, String dst) {
@@ -463,6 +447,21 @@ public class ImportedGraph {
         }
 
         return explored;
+    }
+
+    //Returns a list of nodes that are adjacent to the given node (current)
+    private List<String> getAdjacentNodes(String current){
+        List<String> nodes = new ArrayList<String>();
+        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
+
+        for (Object edge : currentEdges) {
+            String temp = edge.toString();
+            String[] tempArr = temp.split(":");
+
+            nodes.add(tempArr[1].substring(1, tempArr[1].length() - 1));
+            //System.out.println(edge);
+        }
+        return nodes;
     }
 
 /*
