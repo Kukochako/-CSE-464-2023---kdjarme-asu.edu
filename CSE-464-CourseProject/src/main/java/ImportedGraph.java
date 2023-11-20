@@ -336,6 +336,7 @@ public class ImportedGraph {
 
             explored.add(current);
             System.out.println(current);
+
             //if current node is the one we need to find
             if(current.equals(dst)){
                 //explored.add(current);
@@ -344,7 +345,7 @@ public class ImportedGraph {
 
             //Grab all the edges for the current node
             List<String> edges = new ArrayList<>();
-            Set<DefaultEdge> currentEdges =classGraph.outgoingEdgesOf(current);
+            Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
 
             for(Object edge : currentEdges){
                 String temp = edge.toString();
@@ -371,12 +372,14 @@ public class ImportedGraph {
         //if the no path to the dst was found
         if(!explored.contains(dst))
             return null;
+
         else{ //if path was found, trim the explored nodes to only contains the one relevant to the path
 
             String currently = explored.get(explored.size()-1);
             String before = explored.get(explored.size()-2);
             int ref = 1;
             while(!before.equals(src)){
+
                 //if edge to current node does exist, include it in path
                 currently = explored.get(explored.size()-ref);
                 before = explored.get(explored.size()-ref-1);
@@ -399,6 +402,85 @@ public class ImportedGraph {
             return resultPath;
     }
 
+    private MyPath masterDFS(String src, String dst){
+        MyPath resultPath= new MyPath();
+
+        //If the src node is the destination node just return the path with only the src
+        if(src.equals(dst)) {
+            resultPath.addNode(src);
+            return resultPath;
+        }
+
+        List<String> explored = new ArrayList<String>();
+        List<String> searchQueue = new ArrayList<String>();
+
+        searchQueue.add(src);
+
+        //DFS
+        while(!searchQueue.isEmpty()) {
+            String current = searchQueue.remove(searchQueue.size() - 1);
+
+            System.out.println(current);
+
+            //Grab all the edges for the current node
+            List<String> edges = new ArrayList<>();
+            Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
+
+            for (Object edge : currentEdges) {
+                String temp = edge.toString();
+                String[] tempArr = temp.split(":");
+
+                edges.add(tempArr[1].substring(1, tempArr[1].length() - 1));
+                //System.out.println(edge);
+            }
+
+            if(!explored.contains(current)){
+                explored.add(current);
+                for (String edge : edges) {
+
+                    searchQueue.add(edge); //push data to top of stack
+
+                }
+            }
+        }
+
+        //if the no path to the dst was found
+        if(!explored.contains(dst))
+            return null;
+
+        else if(explored.size() > 1){ //if path was found, trim the explored nodes to only contains the one relevant to the path
+
+            String currently = explored.get(explored.size()-1);
+            String before = explored.get(explored.size()-2);
+
+            if(!explored.get(explored.size() - 1).equals(dst)){explored.add(dst);}
+
+            int ref = 1;
+            while(!before.equals(src)){
+
+                //if edge to current node does exist, include it in path
+                currently = explored.get(explored.size()-ref);
+                before = explored.get(explored.size()-ref-1);
+
+                if (classGraph.containsEdge(before, currently)) {
+                    ref = ref + 1;
+                }
+                else{
+                    explored.remove(explored.size()-ref-1);
+                }
+
+                System.out.println(before + " " + currently);
+
+            }
+        }
+
+
+        for(int i = 0; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
+
+        return resultPath;
+    }
+
+/*
     //Feature 2: DFS Search
     private MyPath masterDFS(String src, String dst){
 
@@ -428,9 +510,7 @@ public class ImportedGraph {
                 currently = discovered.get(discovered.size()-ref);
                 before = discovered.get(discovered.size()-ref-1);
 
-                /*if(g.containsEdge(before, dst)){
-                    while(!discovered.get(discovered.size()-ref).equals(dst)){ discovered.remove(discovered.size()-ref); }
-                }*/
+
                 if (classGraph.containsEdge(before, currently)) {
                     ref += 1;
                 }
@@ -461,7 +541,7 @@ public class ImportedGraph {
 
         //Grab all the edges for the current node
         List<String> edges = new ArrayList<>();
-        Set<DefaultEdge> currentEdges =classGraph.outgoingEdgesOf(src);
+        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(src);
 
         for(Object edge : currentEdges){
             String temp = edge.toString();
@@ -487,5 +567,5 @@ public class ImportedGraph {
         return discovered;
 
     }
-
+    */
 }
