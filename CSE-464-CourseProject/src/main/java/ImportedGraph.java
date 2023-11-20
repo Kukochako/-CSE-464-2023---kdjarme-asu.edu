@@ -369,32 +369,9 @@ public class ImportedGraph {
 
         }
 
-        //if the no path to the dst was found
-        if(!explored.contains(dst))
-            return null;
+            explored = buildOptimalPath(explored, src, dst);
 
-        else{ //if path was found, trim the explored nodes to only contains the one relevant to the path
-
-            String currently = explored.get(explored.size()-1);
-            String before = explored.get(explored.size()-2);
-            int ref = 1;
-            while(!before.equals(src)){
-
-                //if edge to current node does exist, include it in path
-                currently = explored.get(explored.size()-ref);
-                before = explored.get(explored.size()-ref-1);
-
-                if (classGraph.containsEdge(before, currently)) {
-                    ref = ref + 1;
-                }
-                else{
-                    explored.remove(explored.size()-ref-1);
-                }
-
-                System.out.println(before + " " + currently);
-
-            }
-        }
+            if(explored == null) return null; //if no path could not be built
 
             
             for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
@@ -444,10 +421,21 @@ public class ImportedGraph {
             }
         }
 
+        explored = buildOptimalPath(explored, src, dst);
+
+        if(explored == null) return null; //if no path could not be built
+
+        for(int i = 0; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
+
+        return resultPath;
+    }
+
+    //builds optimal path by reviewing all the nodes visited and removing unneccessary ones
+    private List<String> buildOptimalPath(List<String> explored, String src, String dst) {
+
         //if the no path to the dst was found
         if(!explored.contains(dst))
             return null;
-
         else if(explored.size() > 1){ //if path was found, trim the explored nodes to only contains the one relevant to the path
 
             String currently = explored.get(explored.size()-1);
@@ -474,10 +462,7 @@ public class ImportedGraph {
             }
         }
 
-
-        for(int i = 0; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
-
-        return resultPath;
+        return explored;
     }
 
 /*
