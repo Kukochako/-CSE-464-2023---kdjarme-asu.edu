@@ -408,6 +408,24 @@ public class TestImportedGraph {
 
     }
 
+    //Tests DFS search when source has multiple paths to destination node
+    @Test
+    public void testDFSMultiplePaths(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
+        ig.addEdge("b", "f");
+
+        String expected = "a -> b -> f";
+
+        assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
+
+    }
+
     //test method used to get the edges of a node
     @Test
     public void testGetEdgesOf(){
@@ -461,11 +479,11 @@ public class TestImportedGraph {
 
     //BFS search where search starts in the middle of the graph
     @Test
-    public void testBFSMiddle(){
+    public void testDFSMiddle(){
 
         String expected = "b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("b","d", ImportedGraph.Algorithm.BFS).toString());
+        assertEquals(expected, ig.GraphSearch("b","d", ImportedGraph.Algorithm.DFS).toString());
 
     }
 
@@ -474,6 +492,24 @@ public class TestImportedGraph {
     public void testBFSInvalid(){
 
         assertNull(ig.GraphSearch("a","f", ImportedGraph.Algorithm.BFS));
+    }
+
+    //Tests DFS search when source has multiple paths to destination node
+    @Test
+    public void testBFSMultiplePaths(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
+        ig.addEdge("b", "f");
+
+        String expected = "a -> b -> f";
+
+        assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.BFS).toString());
+
     }
 
 }

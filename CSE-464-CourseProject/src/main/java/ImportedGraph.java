@@ -339,7 +339,6 @@ public class ImportedGraph {
             //if current node is the one we need to find
             if(current.equals(dst)){
                 //explored.add(current);
-
                 break;
             }
 
@@ -355,8 +354,13 @@ public class ImportedGraph {
                 //System.out.println(edge);
             }
 
+            if(edges.contains(dst)){
+                explored.add(dst);
+                break;
+            }
+
             for(String edge : edges){
-                if(!explored.contains(edge)){
+                if(!explored.contains(edge) && !explored.contains(dst)){
                     //explored.add(edge);
                     searchQueue.add(edge);
                 }
@@ -412,16 +416,23 @@ public class ImportedGraph {
             return null;
         else if((discovered.size() > 1)){ //if path was found, trim the explored nodes to only contains the one relevant to the path
 
+            discovered.add(dst);
+
             String currently = discovered.get(discovered.size()-1);
             String before = discovered.get(discovered.size()-2);
             int ref = 1;
+
             while(!before.equals(src)){
+
                 //if edge to current node does exist, include it in path
                 currently = discovered.get(discovered.size()-ref);
                 before = discovered.get(discovered.size()-ref-1);
 
+                /*if(g.containsEdge(before, dst)){
+                    while(!discovered.get(discovered.size()-ref).equals(dst)){ discovered.remove(discovered.size()-ref); }
+                }*/
                 if (g.containsEdge(before, currently)) {
-                    ref = ref + 1;
+                    ref += 1;
                 }
                 else{
                     discovered.remove(discovered.size()-ref-1);
@@ -442,6 +453,7 @@ public class ImportedGraph {
         discovered.add(src);
         returnMe.addNode(src);
         //System.out.println(src);
+
         //Base case
         if(src.equals(dst)){
             return discovered;
@@ -459,8 +471,13 @@ public class ImportedGraph {
             //System.out.println(edge);
         }
 
+        if(edges.contains(dst)){
+            discovered.add(dst);
+            return discovered;
+        }
+
         for(String edge : edges){
-            if(!discovered.contains(edge)){
+            if(!discovered.contains(edge) && !discovered.contains(dst)){
                 DFS(returnMe, discovered, edge, dst);
             }
 
