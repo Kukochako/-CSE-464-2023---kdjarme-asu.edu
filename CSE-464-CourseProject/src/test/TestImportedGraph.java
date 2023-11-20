@@ -426,20 +426,6 @@ public class TestImportedGraph {
 
     }
 
-    //test method used to get the edges of a node
-    @Test
-    public void testGetEdgesOf(){
-
-        ig.addEdge("a","c");
-        ig.addEdge("a","d");
-
-        List<String> edges = ig.getEdgesOf("a");
-
-        int expected = 3;
-
-        assertEquals(expected, edges.size());
-    }
-
     //~~~~~~~~~~~~~~~Feature 2: DFS search~~~~~~~~~~~~~~//
     //BFS valid search through a straight path
     @Test

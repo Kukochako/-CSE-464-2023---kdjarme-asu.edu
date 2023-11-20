@@ -35,22 +35,6 @@ public class ImportedGraph {
         return classGraph.edgeSet().size();
     }
 
-    public List<String> getEdgesOf(String src){ //Set<String>
-
-        List<String> returnMe = new ArrayList<>();
-        Set<DefaultEdge> edges =classGraph.outgoingEdgesOf(src);
-
-        for(Object edge : edges){
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            returnMe.add(tempArr[1].substring(1,tempArr[1].length()-1));
-        }
-
-        return returnMe;
-
-    }
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //Allows a user to parse a DOT file to create a graph
@@ -88,7 +72,7 @@ public class ImportedGraph {
         returnMe += "Number of Vertices: " + allVertices.size() + "\n";
         returnMe += "Vertex Names:\n";
         for(String vertex : allVertices ){
-            returnMe += vertex.toString() + "\n";
+            returnMe += vertex + "\n";
         }
 
         //grab all edges and return them in proper string format
@@ -309,7 +293,7 @@ public class ImportedGraph {
 
             case BFS:
                 return BFS(src, dst);
-                
+
             case DFS:
                 return DFS(src, dst);
 
@@ -324,8 +308,8 @@ public class ImportedGraph {
 
         MyPath resultPath= new MyPath();
 
-        List<String> explored = new ArrayList<String>();
-        List<String> searchQueue = new ArrayList<String>();
+        List<String> explored = new ArrayList<>();
+        List<String> searchQueue = new ArrayList<>();
 
         searchQueue.add(src);
         explored.add(src);
@@ -379,8 +363,8 @@ public class ImportedGraph {
             return resultPath;
         }
 
-        List<String> explored = new ArrayList<String>();
-        List<String> searchQueue = new ArrayList<String>();
+        List<String> explored = new ArrayList<>();
+        List<String> searchQueue = new ArrayList<>();
 
         searchQueue.add(src);
 
@@ -395,11 +379,8 @@ public class ImportedGraph {
 
             if(!explored.contains(current)){
                 explored.add(current);
-                for (String adjacentNode : nodes) {
-
-                    searchQueue.add(adjacentNode); //push data to top of stack
-
-                }
+                //push adjacent nodes to top of stack
+                searchQueue.addAll(nodes);
             }
         }
 
@@ -449,107 +430,22 @@ public class ImportedGraph {
         return explored;
     }
 
-    //Returns a list of nodes that are adjacent to the given node (current)
-    private List<String> getAdjacentNodes(String current){
+    //Returns a list of nodes that are adjacent to the given node
+    private List<String> getAdjacentNodes(String src){
+
         List<String> nodes = new ArrayList<String>();
-        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(current);
+        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(src);
 
         for (Object edge : currentEdges) {
             String temp = edge.toString();
             String[] tempArr = temp.split(":");
 
+            //Extracts the name of the adjacent node from the edge string
             nodes.add(tempArr[1].substring(1, tempArr[1].length() - 1));
-            //System.out.println(edge);
         }
+
         return nodes;
     }
 
-/*
-    //Feature 2: DFS Search
-    private MyPath masterDFS(String src, String dst){
 
-        List<String> discovered = new ArrayList<>();
-        MyPath resultPath = new MyPath();
-        discovered = DFS(resultPath, discovered, src, dst);
-
-        resultPath = new MyPath();
-        for(String node : discovered)System.out.println(node);
-        //System.out.println(resultPath);
-
-        //Trim resultPath to only contain relevant path
-        //if the no path to the dst was found
-        if(!discovered.contains(dst))
-            return null;
-        else if((discovered.size() > 1)){ //if path was found, trim the explored nodes to only contains the one relevant to the path
-
-            discovered.add(dst);
-
-            String currently = discovered.get(discovered.size()-1);
-            String before = discovered.get(discovered.size()-2);
-            int ref = 1;
-
-            while(!before.equals(src)){
-
-                //if edge to current node does exist, include it in path
-                currently = discovered.get(discovered.size()-ref);
-                before = discovered.get(discovered.size()-ref-1);
-
-
-                if (classGraph.containsEdge(before, currently)) {
-                    ref += 1;
-                }
-                else{
-                    discovered.remove(discovered.size()-ref-1);
-                }
-
-            }
-
-        }
-
-        for(int i = 0; i < discovered.size(); i++){ resultPath.addNode(discovered.get(i)); }
-
-        return resultPath;
-
-    }
-
-    private List<String> DFS(MyPath returnMe, List<String> discovered, String src, String dst){
-
-        discovered.add(src);
-        returnMe.addNode(src);
-        //System.out.println(src);
-
-        //Base case
-        if(src.equals(dst)){
-            return discovered;
-        }
-
-        //Grab all the edges for the current node
-        List<String> edges = new ArrayList<>();
-        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(src);
-
-        for(Object edge : currentEdges){
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
-            //System.out.println(edge);
-        }
-
-        if(edges.contains(dst)){
-            discovered.add(dst);
-            return discovered;
-        }
-
-        for(String edge : edges){
-            if(!discovered.contains(edge) && !discovered.contains(dst)){
-                DFS(returnMe, discovered, edge, dst);
-            }
-
-            //returnMe.removeNode(edge);
-        }
-
-        return discovered;
-
-    }
-    */
 }

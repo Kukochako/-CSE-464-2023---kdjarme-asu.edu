@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="35" failures="0" name="TestImportedGraph" time="2.195" errors="0" skipped="0">
+<testsuite tests="34" failures="0" name="TestImportedGraph" time="2.224" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="20.0.2+9-78"/>
@@ -45,7 +45,7 @@
     <property name="java.class.path" value="C:\Program Files\Maven\apache-maven-3.8.6\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="20"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-20"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -61,39 +61,38 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="TestImportedGraph" name="testRemoveEdgeValid" time="0.305"/>
-  <testcase classname="TestImportedGraph" name="testRemoveNodeValid" time="0.005"/>
-  <testcase classname="TestImportedGraph" name="testRemoveEdgeInValid" time="0.005"/>
+  <testcase classname="TestImportedGraph" name="testRemoveEdgeValid" time="0.349"/>
+  <testcase classname="TestImportedGraph" name="testRemoveNodeValid" time="0.006"/>
+  <testcase classname="TestImportedGraph" name="testRemoveEdgeInValid" time="0.007"/>
   <testcase classname="TestImportedGraph" name="testRemoveNodeInvalid" time="0.012"/>
   <testcase classname="TestImportedGraph" name="testParseGraph" time="0.011"/>
-  <testcase classname="TestImportedGraph" name="testOutputDOTGraph" time="0.032"/>
-  <testcase classname="TestImportedGraph" name="testGetEdgesOf" time="0.009"/>
-  <testcase classname="TestImportedGraph" name="testOutputGraph" time="0.054"/>
-  <testcase classname="TestImportedGraph" name="testDFSMultiplePaths" time="0.016"/>
-  <testcase classname="TestImportedGraph" name="testToString" time="0.003"/>
-  <testcase classname="TestImportedGraph" name="testOutputGraphicsFalsePath" time="0.006"/>
-  <testcase classname="TestImportedGraph" name="testOutputDOTGraphFalse" time="0.005"/>
+  <testcase classname="TestImportedGraph" name="testOutputDOTGraph" time="0.036"/>
+  <testcase classname="TestImportedGraph" name="testOutputGraph" time="0.071"/>
+  <testcase classname="TestImportedGraph" name="testDFSMultiplePaths" time="0.02"/>
+  <testcase classname="TestImportedGraph" name="testToString" time="0.004"/>
+  <testcase classname="TestImportedGraph" name="testOutputGraphicsFalsePath" time="0.008"/>
+  <testcase classname="TestImportedGraph" name="testOutputDOTGraphFalse" time="0.007"/>
   <testcase classname="TestImportedGraph" name="testBFSValidOneBranch" time="0.008"/>
-  <testcase classname="TestImportedGraph" name="testBFSValidImmediate" time="0.002"/>
-  <testcase classname="TestImportedGraph" name="testDFSImmediate" time="0.004"/>
-  <testcase classname="TestImportedGraph" name="testAddNodesValid" time="0.006"/>
-  <testcase classname="TestImportedGraph" name="testBFSMultiplePaths" time="0.009"/>
-  <testcase classname="TestImportedGraph" name="testOutputGraphicsFalseFormat" time="0.001"/>
-  <testcase classname="TestImportedGraph" name="testRemoveNodesSemiValid" time="0.004"/>
-  <testcase classname="TestImportedGraph" name="testDFSOneValidPath" time="0.013"/>
-  <testcase classname="TestImportedGraph" name="testOutputGraphics" time="1.65"/>
+  <testcase classname="TestImportedGraph" name="testBFSValidImmediate" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testDFSImmediate" time="0.005"/>
+  <testcase classname="TestImportedGraph" name="testAddNodesValid" time="0.007"/>
+  <testcase classname="TestImportedGraph" name="testBFSMultiplePaths" time="0.011"/>
+  <testcase classname="TestImportedGraph" name="testOutputGraphicsFalseFormat" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testRemoveNodesSemiValid" time="0.008"/>
+  <testcase classname="TestImportedGraph" name="testDFSOneValidPath" time="0.016"/>
+  <testcase classname="TestImportedGraph" name="testOutputGraphics" time="1.596"/>
   <testcase classname="TestImportedGraph" name="testDFSMiddle" time="0.004"/>
-  <testcase classname="TestImportedGraph" name="testDFSNoPath" time="0.001"/>
+  <testcase classname="TestImportedGraph" name="testDFSNoPath" time="0.002"/>
   <testcase classname="TestImportedGraph" name="testParseGraphFalse" time="0.003"/>
-  <testcase classname="TestImportedGraph" name="testAddEdgeValid" time="0.002"/>
-  <testcase classname="TestImportedGraph" name="testDFSMiddlePath" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testAddEdgeValid" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testDFSMiddlePath" time="0.004"/>
   <testcase classname="TestImportedGraph" name="testAddNodesSemiValid" time="0.002"/>
   <testcase classname="TestImportedGraph" name="testOutputGraphFalse" time="0.002"/>
-  <testcase classname="TestImportedGraph" name="testDFSStraight" time="0.004"/>
-  <testcase classname="TestImportedGraph" name="testBFSValidStriaght" time="0.003"/>
-  <testcase classname="TestImportedGraph" name="testAddNodeValid" time="0.002"/>
-  <testcase classname="TestImportedGraph" name="testBFSInvalid" time="0.003"/>
-  <testcase classname="TestImportedGraph" name="testRemoveNodesValid" time="0.002"/>
-  <testcase classname="TestImportedGraph" name="testAddEdgeInValid" time="0.002"/>
+  <testcase classname="TestImportedGraph" name="testDFSStraight" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testBFSValidStriaght" time="0.002"/>
+  <testcase classname="TestImportedGraph" name="testAddNodeValid" time="0.001"/>
+  <testcase classname="TestImportedGraph" name="testBFSInvalid" time="0.002"/>
+  <testcase classname="TestImportedGraph" name="testRemoveNodesValid" time="0.003"/>
+  <testcase classname="TestImportedGraph" name="testAddEdgeInValid" time="0.003"/>
   <testcase classname="TestImportedGraph" name="testAddNodeInvalid" time="0.002"/>
 </testsuite>
