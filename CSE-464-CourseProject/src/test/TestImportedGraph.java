@@ -415,12 +415,13 @@ public class TestImportedGraph {
         ig.addNode("e");
         ig.addNode("f");
 
+        ig.addEdge("b", "f");
         ig.addEdge("a", "e");
         ig.addEdge("e", "c");
         ig.addEdge("c", "f");
-        ig.addEdge("b", "f");
 
-        String expected = "a -> b -> f";
+
+        String expected = "a -> e -> c -> f";
 
         assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
 
@@ -492,7 +493,7 @@ public class TestImportedGraph {
         ig.addEdge("c", "f");
         ig.addEdge("b", "f");
 
-        String expected = "a -> b -> f";
+        String expected = "a -> e -> c -> f";
 
         assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.BFS).toString());
 

@@ -45,7 +45,7 @@
     <property name="java.class.path" value="C:\Program Files\Maven\apache-maven-3.8.6\boot\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="20"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-20"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -61,7 +61,7 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="TestPath" name="testAddNode" time="0.001"/>
-  <testcase classname="TestPath" name="testToString" time="0"/>
+  <testcase classname="TestPath" name="testAddNode" time="0"/>
+  <testcase classname="TestPath" name="testToString" time="0.001"/>
   <testcase classname="TestPath" name="testRemoveNode" time="0.001"/>
 </testsuite>

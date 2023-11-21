@@ -1,3 +1,6 @@
+ImportedGraph$SearchAlgorithm.class
+ImportedGraph$BFSSearchAlgorithm.class
 ImportedGraph$Algorithm.class
+ImportedGraph$DFSSearchAlgorithm.class
 ImportedGraph.class
 ImportedGraph$1.class

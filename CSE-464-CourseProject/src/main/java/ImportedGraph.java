@@ -292,10 +292,13 @@ public class ImportedGraph {
         switch(Algo){
 
             case BFS:
-                return BFS(src, dst);
+                BFSSearchAlgorithm bfs = new BFSSearchAlgorithm();
+                return bfs.searchGraph(classGraph, src, dst);
 
             case DFS:
-                return DFS(src, dst);
+                //return DFS(src, dst);
+                DFSSearchAlgorithm dfs = new DFSSearchAlgorithm();
+                return dfs.searchGraph(classGraph, src, dst);
 
             default:
                 return null;
@@ -304,99 +307,10 @@ public class ImportedGraph {
 
     }
 
-    private MyPath BFS(String src, String dst){
-
-        MyPath resultPath= new MyPath();
-
-        List<String> explored = new ArrayList<>();
-        List<String> searchQueue = new ArrayList<>();
-
-        searchQueue.add(src);
-        explored.add(src);
-
-        //BFS
-        while(!searchQueue.isEmpty()){
-            String current = searchQueue.remove(0);
-
-            explored.add(current);
-            System.out.println(current);
-
-            //if current node is the one we need to find
-            if(current.equals(dst)){
-                //explored.add(current);
-                break;
-            }
-
-            //Grab all the edges for the current node
-            List<String> nodes = getAdjacentNodes(current);
-
-            if(nodes.contains(dst)){
-                explored.add(dst);
-                break;
-            }
-
-            for(String adjacentNode : nodes){
-                if(!explored.contains(adjacentNode) && !explored.contains(dst)){
-                    //explored.add(edge);
-                    searchQueue.add(adjacentNode);
-                }
-            }
-
-        }
-
-            explored = buildOptimalPath(explored, src, dst);
-
-            if(explored == null) return null; //if no path could not be built
-
-            
-            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
-
-            return resultPath;
-    }
-
-    private MyPath DFS(String src, String dst){
-        MyPath resultPath= new MyPath();
-
-        //If the src node is the destination node just return the path with only the src
-        if(src.equals(dst)) {
-            resultPath.addNode(src);
-            return resultPath;
-        }
-
-        List<String> explored = new ArrayList<>();
-        List<String> searchQueue = new ArrayList<>();
-
-        searchQueue.add(src);
-
-        //DFS
-        while(!searchQueue.isEmpty()) {
-            String current = searchQueue.remove(searchQueue.size() - 1);
-
-            System.out.println(current);
-
-            //Grab all the edges for the current node
-            List<String> nodes = getAdjacentNodes(current);
-
-            if(!explored.contains(current)){
-                explored.add(current);
-                //push adjacent nodes to top of stack
-                searchQueue.addAll(nodes);
-            }
-        }
-
-        explored = buildOptimalPath(explored, src, dst);
-
-        if(explored == null) return null; //if no path could not be built
-
-        for(int i = 0; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
-
-        return resultPath;
-    }
-
     //~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Extaction Methods~~~~~~~~~~~~~~~~~~~~~~~~~//
 
     //builds optimal path by reviewing all the nodes visited and removing unneccessary ones
-    private List<String> buildOptimalPath(List<String> explored, String src, String dst) {
+    private MyPath buildPath(List<String> explored, String src, String dst) {
 
         //if the no path to the dst was found
         if(!explored.contains(dst))
@@ -405,6 +319,8 @@ public class ImportedGraph {
 
             String currently = explored.get(explored.size()-1);
             String before = explored.get(explored.size()-2);
+
+
 
             if(!explored.get(explored.size() - 1).equals(dst)){explored.add(dst);}
 
@@ -422,12 +338,18 @@ public class ImportedGraph {
                     explored.remove(explored.size()-ref-1);
                 }
 
-                System.out.println(before + " " + currently);
+                System.out.println(before + " " + currently + " ref: " + ref);
 
             }
         }
 
-        return explored;
+        MyPath returnPath = new MyPath();
+        for (int i = 0; i < explored.size(); i++) {
+            returnPath.addNode(explored.get(i));
+        }
+
+        return returnPath;
+
     }
 
     //Returns a list of nodes that are adjacent to the given node
@@ -445,6 +367,110 @@ public class ImportedGraph {
         }
 
         return nodes;
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Template Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    public abstract class SearchAlgorithm{
+
+        MyPath resultPath = new MyPath();
+
+        List<String> explored = new ArrayList<String>(); //Each search algo starts with different values in their explored list
+        List<String> explorable = new ArrayList<String>();
+
+        //Class specific search algorithm that searches given graph ig for dst starting from src
+        public MyPath searchGraph(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
+
+            resultPath= new MyPath();
+
+            explored = initializeExploredList(src); //Each search algo starts with different values in their explored list
+            explorable.add(src);
+
+            //If the src node is the destination node just return the path with only the src
+            if(src.equals(dst)) {
+                resultPath.addNode(src);
+                return resultPath;
+            }
+
+            //Search Template
+            while(!explorable.isEmpty()){
+                String current = getNextNode(); //grabs the next node to explore
+
+                updateExplorableList(current); //updates explorable with the next values to explore
+
+            }
+
+            resultPath = buildPath(explored, src, dst); //converts list of explored nodes to MyPath Object
+
+            return resultPath;
+        }
+
+        abstract List<String> initializeExploredList(String src);
+        abstract String getNextNode();
+        abstract void updateExplorableList(String current);
+
+    }
+
+    public class BFSSearchAlgorithm extends SearchAlgorithm{
+
+        //BFS Searching starts by adding source to the list of explored nodes
+        public List<String> initializeExploredList(String src){
+
+            super.explored.add(src);
+            return super.explored;
+
+         }
+
+        //BFS pulls values from the start of the list
+        public String getNextNode(){
+
+            return super.explorable.remove(0);
+
+        }
+
+        //BFS adds adjacent nodes to explored and explorable list if they have not been explored yet
+        public void updateExplorableList(String current){
+            //Grab all the edges for the current node
+            List<String> nodes = getAdjacentNodes(current);
+
+            for(String adjacentNode : nodes){
+                if(!super.explored.contains(adjacentNode)){
+                    super.explored.add(adjacentNode);
+                    super.explorable.add(adjacentNode);
+                }
+            }
+        }
+    }
+
+    public class DFSSearchAlgorithm extends SearchAlgorithm{
+
+        //DFS Searching starts by adding no nodes to the explored queue
+        public List<String> initializeExploredList(String src){
+
+            return new ArrayList<String>();
+
+        }
+
+        //DFS pulls values from the end of the list
+        public String getNextNode(){
+
+            return super.explorable.remove(super.explorable.size() - 1);
+
+        }
+
+        //DFS adds current node to explored if it has not yet been explored
+        //and adds all nodes adjacent to the current node to the explorable list
+        public void updateExplorableList(String current){
+            //Grab all the edges for the current node
+            List<String> nodes = getAdjacentNodes(current);
+
+            if(!explored.contains(current)){
+                explored.add(current);
+                for(String adjacentNode : nodes){
+                    explorable.add(0,adjacentNode);
+                }
+            }
+        }
     }
 
 
