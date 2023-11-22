@@ -289,16 +289,19 @@ public class ImportedGraph {
     //out the path it took to get there
     public MyPath GraphSearch(String src, String dst, Algorithm Algo){
 
+        SearchContext sc;
+        BFSSearchAlgorithm bfs  = new BFSSearchAlgorithm();
+        BFSSearchAlgorithm dfs  = new BFSSearchAlgorithm();
+
         switch(Algo){
 
             case BFS:
-                BFSSearchAlgorithm bfs = new BFSSearchAlgorithm();
-                return bfs.searchGraph(classGraph, src, dst);
+                sc = new SearchContext(bfs);
+                return sc.search(classGraph, src, dst);
 
             case DFS:
-                //return DFS(src, dst);
-                DFSSearchAlgorithm dfs = new DFSSearchAlgorithm();
-                return dfs.searchGraph(classGraph, src, dst);
+                sc = new SearchContext(dfs);
+                return sc.search(classGraph, src, dst);
 
             default:
                 return null;
@@ -309,7 +312,7 @@ public class ImportedGraph {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Extaction Methods~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-    //builds optimal path by reviewing all the nodes visited and removing unneccessary ones
+    //builds path by reviewing all the nodes visited and removing ones that do not connect
     private MyPath buildPath(List<String> explored, String src, String dst) {
 
         //if the no path to the dst was found
@@ -472,6 +475,24 @@ public class ImportedGraph {
             }
         }
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Strategy Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    public class SearchContext{
+
+        //Make a generalized Search object that will determine what type of search will be done
+        private SearchAlgorithm sa;
+
+        //Constructor
+        public SearchContext(SearchAlgorithm newContext){ sa = newContext; }
+
+        //perform specific search based on the context
+        public MyPath search(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
+            return sa.searchGraph(ig, src, dst);
+        }
+
+    }
+
 
 
 }
