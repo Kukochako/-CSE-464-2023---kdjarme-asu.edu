@@ -10,10 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import static guru.nidi.graphviz.model.Factory.*;
 
@@ -21,7 +18,7 @@ public class ImportedGraph {
 
     //Enumeration to determine which algorithm will be used to search
     public enum Algorithm{
-        BFS, DFS
+        BFS, DFS, RAND
     }
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> classGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
@@ -290,8 +287,11 @@ public class ImportedGraph {
     public MyPath GraphSearch(String src, String dst, Algorithm Algo){
 
         SearchContext sc;
+
+        //Create a context for each algorithm
         BFSSearchAlgorithm bfs  = new BFSSearchAlgorithm();
-        BFSSearchAlgorithm dfs  = new BFSSearchAlgorithm();
+        DFSSearchAlgorithm dfs  = new DFSSearchAlgorithm();
+        RandomWalkSearchAlgorithm rws = new RandomWalkSearchAlgorithm();
 
         switch(Algo){
 
@@ -303,6 +303,9 @@ public class ImportedGraph {
                 sc = new SearchContext(dfs);
                 return sc.search(classGraph, src, dst);
 
+            case RAND:
+                sc = new SearchContext(rws);
+                return sc.search(classGraph, src, dst);
             default:
                 return null;
 
@@ -323,11 +326,12 @@ public class ImportedGraph {
             String currently = explored.get(explored.size()-1);
             String before = explored.get(explored.size()-2);
 
+            if(!explored.get(explored.size() - 1).equals(dst)){explored.add(dst);} //add destination to end of list so the path will guarantee end with the dst
+            int ref = 1; //used to hold the position of where in the list we are comparing the values from
 
-
-            if(!explored.get(explored.size() - 1).equals(dst)){explored.add(dst);}
-
-            int ref = 1;
+            //Strating from the end of the list, compare the current node to the one before it
+            //if the node before it has an edge to the current node, move the reference pointer to compare from the node before the current node now
+            //if there is no edge from the node before to the current node, remove the node before
             while(!before.equals(src)){
 
                 //if edge to current node does exist, include it in path
@@ -341,7 +345,7 @@ public class ImportedGraph {
                     explored.remove(explored.size()-ref-1);
                 }
 
-                System.out.println(before + " " + currently + " ref: " + ref);
+                //System.out.println(before + " " + currently + " ref: " + ref);
 
             }
         }
@@ -473,6 +477,49 @@ public class ImportedGraph {
                     explorable.add(0,adjacentNode);
                 }
             }
+        }
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Random Walk~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
+
+        //RWS Searching starts by adding no nodes to the explored queue
+        public List<String> initializeExploredList(String src){
+
+            super.explored.add(src);
+
+            System.out.print("Random Search Path");
+
+            return super.explored;
+
+        }
+
+        //RWS pulls values from the start of the list
+        public String getNextNode(){
+
+            return super.explorable.remove(0);
+
+        }
+
+        //RWS adds adjacent nodes to explored and explorable list if they have not been explored yet
+        public void updateExplorableList(String current){
+            //Grab all the edges for the current node
+            List<String> nodes = getAdjacentNodes(current);
+
+            Random rand = new Random(); //Random object to generate random numbers
+            System.out.print(" -> " + current);
+
+            //insert the objects into the queue then randomize
+            for(String adjacentNode : nodes){
+
+                if(!super.explored.contains(adjacentNode)){
+                    super.explored.add(adjacentNode);
+                    super.explorable.add(adjacentNode);
+                }
+            }
+
+            Collections.shuffle(super.explorable); //randomize order
         }
     }
 

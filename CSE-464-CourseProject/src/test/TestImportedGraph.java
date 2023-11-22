@@ -499,4 +499,51 @@ public class TestImportedGraph {
 
     }
 
+    //Tests RWS using dot file provided by professor
+    @Test
+    public void testRandomWalkSearchValidProvidedValidInput() throws IOException {
+
+        ig.parseGraph("src/dot/input2.dot");
+
+        MyPath tempPath = ig.GraphSearch("a", "f", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
+    }
+
+    //Tests RWS using valid input
+    @Test
+    public void testRandomWalkSearchOwnInputValid() throws IOException {
+
+        ig.parseGraph("src/dot/sample.dot");
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
+        ig.addEdge("b", "f");
+
+
+        MyPath tempPath = ig.GraphSearch("a", "f", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
+        //assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.BFS).toString());
+
+    }
+
+    //Tests RWS using dot file provided by professor
+    @Test
+    public void testRandomWalkSearchInvalidInput() throws IOException {
+
+        ig.parseGraph("src/dot/input2.dot");
+
+        MyPath tempPath = ig.GraphSearch("a", "z", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
+    }
+
 }
