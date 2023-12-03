@@ -35,7 +35,7 @@ public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
     //RWS adds adjacent nodes to explored and explorable list if they have not been explored yet
     public void updateExplorableList(String current){
         //Grab all the edges for the current node
-        List<String> nodes = getAdjacentNodes(current);
+        List<String> nodes = classGraph.getAdjacentNodes(current);
 
         //insert the objects into the queue then randomize
         for(String adjacentNode : nodes){

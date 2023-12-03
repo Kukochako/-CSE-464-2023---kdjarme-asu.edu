@@ -1,6 +1,8 @@
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.*;
+
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.*;
 import org.jgrapht.nio.dot.*;
 
@@ -50,6 +52,12 @@ public class ImportedGraph {
     public Set<DefaultEdge> getOutgoingEdges(String src){
         return classGraph.outgoingEdgesOf(src);
     }
+
+    //public access method for successorListOf
+    public List<String> getAdjacentNodes(String src){
+        return Graphs.successorListOf(classGraph, src);
+    }
+    
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 

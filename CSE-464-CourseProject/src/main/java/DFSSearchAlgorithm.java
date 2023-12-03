@@ -30,7 +30,7 @@ public class DFSSearchAlgorithm extends SearchAlgorithm{
     //and adds all nodes adjacent to the current node to the explorable list
     public void updateExplorableList(String current){
         //Grab all the edges for the current node
-        List<String> nodes = getAdjacentNodes(current);
+        List<String> nodes = classGraph.getAdjacentNodes(current);
 
         if(!explored.contains(current)){
             explored.add(current);

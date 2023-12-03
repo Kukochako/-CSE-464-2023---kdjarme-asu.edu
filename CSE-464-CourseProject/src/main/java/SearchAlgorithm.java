@@ -3,7 +3,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.jgrapht.graph.DefaultEdge;
 
@@ -64,23 +63,6 @@ public abstract class SearchAlgorithm{
 
         return returnPath;
 
-    }
-
-    //Returns a list of nodes that are adjacent to the given node
-    protected List<String> getAdjacentNodes(String src){
-
-        List<String> nodes = new ArrayList<String>();
-        Set<DefaultEdge> currentEdges = classGraph.getOutgoingEdges(src);
-
-        for (Object edge : currentEdges) {
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            //Extracts the name of the adjacent node from the edge string
-            nodes.add(tempArr[1].substring(1, tempArr[1].length() - 1));
-        }
-
-        return nodes;
     }
 
 
