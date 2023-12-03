@@ -19,6 +19,7 @@ public class ImportedGraph {
     public enum Algorithm{
         BFS, DFS, RAND
     }
+
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> classGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
@@ -299,53 +300,18 @@ public class ImportedGraph {
 
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~Feature 2: BFS to find node ~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     //Navigates graph starting from src node to find dst node and prints
     //out the path it took to get there
+    //User is allowed to specify which type of search they want to use
+    //Implemented using Strategy Pattern
     public MyPath GraphSearch(String src, String dst, Algorithm Algo){
+        
+        SearchContext sc = new SearchContext(classGraph, Algo); //create search context
 
-        SearchContext sc;
-
-        //Create a context for each algorithm
-        BFSSearchAlgorithm bfs  = new BFSSearchAlgorithm(classGraph);
-        DFSSearchAlgorithm dfs  = new DFSSearchAlgorithm(classGraph);
-        RandomWalkSearchAlgorithm rws = new RandomWalkSearchAlgorithm(classGraph);
-
-        switch(Algo){
-
-            case BFS:
-                sc = new SearchContext(bfs);
-                return sc.search(classGraph, src, dst);
-
-            case DFS:
-                sc = new SearchContext(dfs);
-                return sc.search(classGraph, src, dst);
-
-            case RAND:
-                sc = new SearchContext(rws);
-                return sc.search(classGraph, src, dst);
-            default:
-                return null;
-
-        }
+        return sc.search(classGraph, src, dst); //return search results using specified search technique
 
     }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~Strategy Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-public class SearchContext{
-
-    //Make a generalized Search object that will determine what type of search will be done
-    private SearchAlgorithm sa;
-
-    //Constructor
-    public SearchContext(SearchAlgorithm newContext){ sa = newContext; }
-
-    //perform specific search based on the context
-    public MyPath search(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
-        return sa.searchGraph(ig, src, dst);
-    }
-
-}   
 
 }
