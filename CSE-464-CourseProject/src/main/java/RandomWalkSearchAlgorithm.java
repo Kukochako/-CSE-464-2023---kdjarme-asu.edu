@@ -19,7 +19,7 @@ public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
 
         super.explored.add(src);
 
-        System.out.print("Random Search Path");
+        System.out.print("Random Search Path: Start ");
 
         return super.explored;
 
@@ -27,7 +27,6 @@ public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
 
     //RWS pulls values from the start of the list
     public String getNextNode(){
-
         return super.explorable.remove(0);
 
     }
@@ -35,6 +34,7 @@ public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
     //RWS adds adjacent nodes to explored and explorable list if they have not been explored yet
     public void updateExplorableList(String current){
         //Grab all the edges for the current node
+        System.out.print("-> " + current + " ");
         List<String> nodes = classGraph.getAdjacentNodes(current);
 
         //insert the objects into the queue then randomize
