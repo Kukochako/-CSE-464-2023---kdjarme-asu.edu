@@ -3,10 +3,9 @@ Course Project for CSE 464 - Fall 2023 - ASU<br>
 This project implements a program that is able to parse a DOT file, make modifcations to parsed files, and export modified graphs into DOT files.<br><br>
 The program is primarily a single class known as ImportedGraph that contains all methods for the first four features and a test class called TestImportedGraph that contains test cases for the ImportedGraph class.
 
-## Table of Contents
+## Project Overview
   - [Maven Setup](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#maven-setup)
   - [API](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#api)
-  - [Additional Links for Part 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-2)
   - [Project Discrepancies](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#project-discrepancies)
   - [Test Notes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#test-notes)
 
@@ -30,6 +29,11 @@ Part 1 Features:
 Part 2 Features:
   - [Feature 1: Removing Vertices and Edges](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-1---removing-vertices-and-edges)
   - [Feature 2: Searching for Nodes](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-2---graph-searching-using-bfs-and-dfs)
+  - [Additional Links for Part 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-2)
+
+Part 3 Features:
+  - [Feature 1: Random Walk Search](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-1---removing-vertices-and-edges)
+  - [Additional Links for Part 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-3)
 
 ## Part 1
 ### Feature 1 - Parsing a DOT File
@@ -235,6 +239,7 @@ Also implemented preliminary test cases for related functions.
    * **Parameter(s):**
      - String srcLabel - contains the name of the vertex where the search will originate from
      - String dstLabel - contains the name of the vertex where the search will end at
+     - Algorithm Algo - contains enumerated value that determines which search algorithm to use. Can be be wither "DFS" or "BFS"
 
    * **Output:**
      - MyPath object that contains a path starting from the srcLabel to dstLabel. If a path from scrLabel to dstLabel cannot be found, null value will be returned.
@@ -248,6 +253,39 @@ Also implemented preliminary test cases for related functions.
 ## Additional Links for Part 2
   - [Link to successful merge after conflict](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/f98600df2725d20aebe98da073b8eef2bf6975a1)
   - [Link to Workflow Tab for Continuous Integration](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/actions)
+
+## Part 3
+### Feature 1 - Random Walk Search
+<b>Link:</b> [Link to Feature 1 commit](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/885cbc4dc0ff85040efd3047d82cc5ea8f91d7ce)<br><br>
+<b>Description:</b> Updated Graph Search to allow for a thrid type of Search, RandomWalkSearch. Allows user to search for a path from a source node to a destination node where the path taken is randomized every time.
+<b>public MyPath GraphSearch(String src, String dst, Algorithm Algo) (Specifically Algo.RAND)</b><br>
+  * **Description:**
+     - Attempts to search for a label starting the search from another specified label. This feature implements the random search variant.
+   
+   * **Parameter(s):**
+     - String filePath - contains the path to the dotfile that is to be parsed. Must include the name of the file and its extension as well
+
+   * **Output:**
+     - MyPath object that contains a path starting from the srcLabel to dstLabel. If a path from scrLabel to dstLabel cannot be found, null value will be returned.
+    
+   * **Example use:**<br><br>
+     - Both Images show the path taken to navigate the graph from the source nodes to the destination node. Since the search is random, the path taken may be different each time the method is called. The images were chosen to reflect this.
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/b6ade1e2-655c-4541-aea1-3c33379dcfbd)
+ <br><br>
+     ![image](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/assets/44959291/a8490ac5-88b8-4a38-8ed8-a45d4c1b48cd) <br><br>
+
+## Additional Links for Part 3
+  ### Required Refactors
+  - [Refactor 1](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/8ad8a2812b96a9f2527b6a0d2c64bab5684c7bb4)
+  - [Refactor 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/ebdddaeb8bc3dd86f1df35e268b65a8bb6d32a94)
+  - [Refactor 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/9cb0eec0be80d7ee41eb9dc31039560c603d8431)
+  - [Refactor 4](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/9236c674f83168c17304c89835106ee89ad56461)
+  - [Refactor 5](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/6755420637de7278ebab22ef5796fa34240dd142)
+  ### Pattern and Pull Request Links
+  - [Link to Implementation of Template Pattern](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/bfcc5b75c0f7ca6d69811591fd58f605759ff90d)
+  - [Link to Implementation of Strategy Pattern](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/commits/8490377386cac2b2b0ecfacee2fb58a272407f4c)
+  - [Link to Pull Request Discussion](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/pull/1/)
+  - [Link to Pull Request Success](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/commit/e57ebdeef0c55a8031f66c1bfd27169fa8091a3e)
 
 ## Project Discrepancies
   - Part 2 requires the creation of a Path class. For my project, I use a library that already contains the definition for Path object. As a result, I opted to name the Path class that I needed to create MyPath.
