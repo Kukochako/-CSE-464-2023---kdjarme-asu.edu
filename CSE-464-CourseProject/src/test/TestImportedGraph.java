@@ -3,7 +3,6 @@ import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -408,18 +407,23 @@ public class TestImportedGraph {
 
     }
 
-    //test method used to get the edges of a node
+    //Tests DFS search when source has multiple paths to destination node
     @Test
-    public void testGetEdgesOf(){
+    public void testDFSMultiplePaths(){
 
-        ig.addEdge("a","c");
-        ig.addEdge("a","d");
+        ig.addNode("e");
+        ig.addNode("f");
 
-        List<String> edges = ig.getEdgesOf("a");
+        ig.addEdge("b", "f");
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
 
-        int expected = 3;
 
-        assertEquals(expected, edges.size());
+        String expected = "a -> e -> c -> f";
+
+        assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.DFS).toString());
+
     }
 
     //~~~~~~~~~~~~~~~Feature 2: DFS search~~~~~~~~~~~~~~//
@@ -461,11 +465,11 @@ public class TestImportedGraph {
 
     //BFS search where search starts in the middle of the graph
     @Test
-    public void testBFSMiddle(){
+    public void testDFSMiddle(){
 
         String expected = "b -> c -> d";
 
-        assertEquals(expected, ig.GraphSearch("b","d", ImportedGraph.Algorithm.BFS).toString());
+        assertEquals(expected, ig.GraphSearch("b","d", ImportedGraph.Algorithm.DFS).toString());
 
     }
 
@@ -474,6 +478,71 @@ public class TestImportedGraph {
     public void testBFSInvalid(){
 
         assertNull(ig.GraphSearch("a","f", ImportedGraph.Algorithm.BFS));
+    }
+
+    //Tests BFS search when source has multiple paths to destination node
+    @Test
+    public void testBFSMultiplePaths(){
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
+        ig.addEdge("b", "f");
+
+        String expected = "a -> e -> c -> f";
+
+        assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.BFS).toString());
+
+    }
+
+    //Tests RWS using dot file provided by professor
+    @Test
+    public void testRandomWalkSearchValidProvidedValidInput() throws IOException {
+
+        ig.parseGraph("src/dot/input2.dot");
+
+        MyPath tempPath = ig.GraphSearch("a", "f", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
+    }
+
+    //Tests RWS using valid input
+    @Test
+    public void testRandomWalkSearchOwnInputValid() throws IOException {
+
+        ig.parseGraph("src/dot/sample.dot");
+
+        ig.addNode("e");
+        ig.addNode("f");
+
+        ig.addEdge("a", "e");
+        ig.addEdge("e", "c");
+        ig.addEdge("c", "f");
+        ig.addEdge("b", "f");
+
+
+        MyPath tempPath = ig.GraphSearch("a", "f", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
+        //assertEquals(expected, ig.GraphSearch("a", "f", ImportedGraph.Algorithm.BFS).toString());
+
+    }
+
+    //Tests RWS using dot file provided by professor
+    @Test
+    public void testRandomWalkSearchInvalidInput() throws IOException {
+
+        ig.parseGraph("src/dot/input2.dot");
+
+        MyPath tempPath = ig.GraphSearch("a", "z", ImportedGraph.Algorithm.RAND);
+
+        System.out.println("\nEnd Path: " + tempPath);
+
     }
 
 }

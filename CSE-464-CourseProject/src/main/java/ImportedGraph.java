@@ -1,19 +1,17 @@
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.*;
+
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.*;
 import org.jgrapht.nio.dot.*;
 
 import java.io.*;
-import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import static guru.nidi.graphviz.model.Factory.*;
 
@@ -21,35 +19,45 @@ public class ImportedGraph {
 
     //Enumeration to determine which algorithm will be used to search
     public enum Algorithm{
-        BFS, DFS
+        BFS, DFS, RAND
     }
+
     //Instance variable that stores the value of the parsed graph
-    private org.jgrapht.Graph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
+    private org.jgrapht.Graph<String, DefaultEdge> classGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+
+    //Constructors
+
+    //Default Constructor
+    public ImportedGraph() {}
+
+    public ImportedGraph(org.jgrapht.Graph<String, DefaultEdge> ig){
+        classGraph = ig;
+    }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~ACCESSORS~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     public int getAmountOfVertices(){
-        return g.vertexSet().size();
+        return classGraph.vertexSet().size();
     }
 
     public int getAmountOfEdges(){
-        return g.edgeSet().size();
+        return classGraph.edgeSet().size();
     }
 
-    public List<String> getEdgesOf(String src){ //Set<String>
-
-        List<String> returnMe = new ArrayList<>();
-        Set<DefaultEdge> edges = g.outgoingEdgesOf(src);
-
-        for(Object edge : edges){
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            returnMe.add(tempArr[1].substring(1,tempArr[1].length()-1));
-        }
-
-        return returnMe;
-
+    //public access method for containsEdge
+    public boolean getIsEdge(String src, String dst){
+        return classGraph.containsEdge(src, dst);
     }
+
+    //public access method for outgoingEdgesOf
+    public Set<DefaultEdge> getOutgoingEdges(String src){
+        return classGraph.outgoingEdgesOf(src);
+    }
+
+    //public access method for successorListOf
+    public List<String> getAdjacentNodes(String src){
+        return Graphs.successorListOf(classGraph, src);
+    }
+    
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -65,7 +73,7 @@ public class ImportedGraph {
             File myFile = new File(filePath);
             FileReader rd = new FileReader(myFile);
 
-            dotimp.importGraph(g, rd); //imports dotfile data into graph variable
+            dotimp.importGraph(classGraph, rd); //imports dotfile data into graph variable
 
             rd.close(); //closes reader to prevent memory leaks
         }
@@ -84,15 +92,15 @@ public class ImportedGraph {
         String returnMe = ""; //String that will contain the compiled information of the graph
 
         //grab all vertices and return them in proper string format
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         returnMe += "Number of Vertices: " + allVertices.size() + "\n";
         returnMe += "Vertex Names:\n";
         for(String vertex : allVertices ){
-            returnMe += vertex.toString() + "\n";
+            returnMe += vertex + "\n";
         }
 
         //grab all edges and return them in proper string format
-        Set<DefaultEdge> allEdges = g.edgeSet();
+        Set<DefaultEdge> allEdges =classGraph.edgeSet();
         returnMe += "\nNumber of Edges: " + allEdges.size() + "\n";
         returnMe += "Edge Directions:\n";
         for(Object edge : allEdges){
@@ -132,13 +140,13 @@ public class ImportedGraph {
     //Function that allows a user to add a node to the imported graph
     public String addNode(String label){
 
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         //if all vertex to be added already exists, do not append it to the graph
         if(allVertices.contains(label)){
             return "Failed to add! Vertex " + label + " already exists!";
         }
         else{
-            g.addVertex(label);
+           classGraph.addVertex(label);
         }
 
         return label + " successfully added!";
@@ -164,11 +172,11 @@ public class ImportedGraph {
         addNodes(sources);
 
         //Then check if the edge relationship makes sense
-        if(g.containsEdge(srcLabel, dstLabel)){
+        if(classGraph.containsEdge(srcLabel, dstLabel)){
             System.out.println("Failed to add edge. " + srcLabel + " -> " + dstLabel + " already exists!");
         }
         else{ //If edge makes sense, add its relationship to the graph
-            g.addEdge(srcLabel, dstLabel);
+           classGraph.addEdge(srcLabel, dstLabel);
             System.out.println("New edge: " + srcLabel + " -> " + dstLabel + " was added successfully!");
         }
 
@@ -192,7 +200,7 @@ public class ImportedGraph {
             File myFile = new File(filePath);
             FileWriter wr = new FileWriter(myFile);
 
-            dotexp.exportGraph(g,wr); //exports dotfile data into graph variable
+            dotexp.exportGraph(classGraph,wr); //exports dotfile data into graph variable
 
             wr.close(); //closes writer to prevent memory leaks
         }
@@ -217,14 +225,14 @@ public class ImportedGraph {
             MutableGraph vizg = mutGraph().setDirected(true);//mutgraph("exportedGraph").directed();
 
             //adds all vertices as nodes to the vizgraph
-            Set<String> allVertices = g.vertexSet();
+            Set<String> allVertices =classGraph.vertexSet();
             for(String vertex : allVertices ) {
                 Node newNode = node(vertex);
                 vizg.add(newNode);
             }
 
             //adds all edges to the vizgraph
-            Set<DefaultEdge> allEdges = g.edgeSet();
+            Set<DefaultEdge> allEdges =classGraph.edgeSet();
             for(Object edge : allEdges){
 
                 //Grabs the name of the nodes
@@ -265,13 +273,13 @@ public class ImportedGraph {
     //Function that allows a user to remove a node to the imported graph
     public String removeNode(String label){
 
-        Set<String> allVertices = g.vertexSet();
+        Set<String> allVertices =classGraph.vertexSet();
         //if all vertex to be added already exists, do not append it to the graph
         if(!allVertices.contains(label)){
             return "Failed to remove! Vertex " + label + " does not exist!";
         }
         else{
-            g.removeVertex(label);
+           classGraph.removeVertex(label);
         }
 
         return label + " successfully removed!";
@@ -290,185 +298,28 @@ public class ImportedGraph {
     public void removeEdge(String srcLabel, String dstLabel){
 
         //Check if the edge relationship makes sense
-        if(!g.containsEdge(srcLabel, dstLabel)){
+        if(!classGraph.containsEdge(srcLabel, dstLabel)){
             System.out.println("Failed to remove edge. " + srcLabel + " -> " + dstLabel + " does not exist!");
         }
         else{ //If edge makes sense, remove its relationship to the graph
-            g.removeEdge(srcLabel, dstLabel);
+           classGraph.removeEdge(srcLabel, dstLabel);
             System.out.println("Edge: " + srcLabel + " -> " + dstLabel + " was removed successfully!");
         }
 
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~Feature 2: BFS to find node ~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     //Navigates graph starting from src node to find dst node and prints
     //out the path it took to get there
+    //User is allowed to specify which type of search they want to use
+    //Implemented using Strategy Pattern
     public MyPath GraphSearch(String src, String dst, Algorithm Algo){
+        
+        SearchContext sc = new SearchContext(classGraph, Algo); //create search context
 
-        switch(Algo){
-
-            case BFS:
-                return BFS(src, dst);
-                
-            case DFS:
-                return masterDFS(src, dst);
-
-            default:
-                return null;
-
-        }
+        return sc.search(classGraph, src, dst); //return search results using specified search technique
 
     }
 
-    private MyPath BFS(String src, String dst){
-
-        MyPath resultPath= new MyPath();
-
-        List<String> explored = new ArrayList<String>();
-        List<String> searchQueue = new ArrayList<String>();
-
-        searchQueue.add(src);
-        explored.add(src);
-
-        //BFS
-        while(!searchQueue.isEmpty()){
-            String current = searchQueue.remove(0);
-
-            explored.add(current);
-            System.out.println(current);
-            //if current node is the one we need to find
-            if(current.equals(dst)){
-                //explored.add(current);
-
-                break;
-            }
-
-            //Grab all the edges for the current node
-            List<String> edges = new ArrayList<>();
-            Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(current);
-
-            for(Object edge : currentEdges){
-                String temp = edge.toString();
-                String[] tempArr = temp.split(":");
-
-                edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
-                //System.out.println(edge);
-            }
-
-            for(String edge : edges){
-                if(!explored.contains(edge)){
-                    //explored.add(edge);
-                    searchQueue.add(edge);
-                }
-            }
-
-        }
-
-        //if the no path to the dst was found
-        if(!explored.contains(dst))
-            return null;
-        else{ //if path was found, trim the explored nodes to only contains the one relevant to the path
-
-            String currently = explored.get(explored.size()-1);
-            String before = explored.get(explored.size()-2);
-            int ref = 1;
-            while(!before.equals(src)){
-                //if edge to current node does exist, include it in path
-                currently = explored.get(explored.size()-ref);
-                before = explored.get(explored.size()-ref-1);
-
-                if (g.containsEdge(before, currently)) {
-                    ref = ref + 1;
-                }
-                else{
-                    explored.remove(explored.size()-ref-1);
-                }
-
-                System.out.println(before + " " + currently);
-
-            }
-        }
-
-            
-            for(int i = 1; i < explored.size(); i++){ resultPath.addNode(explored.get(i)); }
-
-            return resultPath;
-    }
-
-    //Feature 2: DFS Search
-    private MyPath masterDFS(String src, String dst){
-
-        List<String> discovered = new ArrayList<>();
-        MyPath resultPath = new MyPath();
-        discovered = DFS(resultPath, discovered, src, dst);
-
-        resultPath = new MyPath();
-        for(String node : discovered)System.out.println(node);
-        //System.out.println(resultPath);
-
-        //Trim resultPath to only contain relevant path
-        //if the no path to the dst was found
-        if(!discovered.contains(dst))
-            return null;
-        else if((discovered.size() > 1)){ //if path was found, trim the explored nodes to only contains the one relevant to the path
-
-            String currently = discovered.get(discovered.size()-1);
-            String before = discovered.get(discovered.size()-2);
-            int ref = 1;
-            while(!before.equals(src)){
-                //if edge to current node does exist, include it in path
-                currently = discovered.get(discovered.size()-ref);
-                before = discovered.get(discovered.size()-ref-1);
-
-                if (g.containsEdge(before, currently)) {
-                    ref = ref + 1;
-                }
-                else{
-                    discovered.remove(discovered.size()-ref-1);
-                }
-
-            }
-
-        }
-
-        for(int i = 0; i < discovered.size(); i++){ resultPath.addNode(discovered.get(i)); }
-
-        return resultPath;
-
-    }
-
-    private List<String> DFS(MyPath returnMe, List<String> discovered, String src, String dst){
-
-        discovered.add(src);
-        returnMe.addNode(src);
-        //System.out.println(src);
-        //Base case
-        if(src.equals(dst)){
-            return discovered;
-        }
-
-        //Grab all the edges for the current node
-        List<String> edges = new ArrayList<>();
-        Set<DefaultEdge> currentEdges = g.outgoingEdgesOf(src);
-
-        for(Object edge : currentEdges){
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            edges.add(tempArr[1].substring(1,tempArr[1].length()-1));
-            //System.out.println(edge);
-        }
-
-        for(String edge : edges){
-            if(!discovered.contains(edge)){
-                DFS(returnMe, discovered, edge, dst);
-            }
-
-            //returnMe.removeNode(edge);
-        }
-
-        return discovered;
-
-    }
 
 }
