@@ -32,8 +32,8 @@ Part 2 Features:
   - [Additional Links for Part 2](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-2)
 
 Part 3 Features:
-  - [Feature 1: Random Walk Search](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#feature-1---removing-vertices-and-edges)
-  - [Additional Links for Part 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu/tree/main#additional-links-for-part-3)
+  - [Feature 1: Random Walk Search](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#feature-1---random-walk-search)
+  - [Additional Links for Part 3](https://github.com/Kukochako/-CSE-464-2023---kdjarme-asu.edu#additional-links-for-part-3)
 
 ## Part 1
 ### Feature 1 - Parsing a DOT File
