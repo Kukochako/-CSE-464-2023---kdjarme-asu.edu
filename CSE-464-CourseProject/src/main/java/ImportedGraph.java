@@ -5,7 +5,6 @@ import org.jgrapht.graph.*;
 import org.jgrapht.nio.dot.*;
 
 import java.io.*;
-import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +22,15 @@ public class ImportedGraph {
     //Instance variable that stores the value of the parsed graph
     private org.jgrapht.Graph<String, DefaultEdge> classGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
+    //Constructors
+
+    //Default Constructor
+    public ImportedGraph() {}
+
+    public ImportedGraph(org.jgrapht.Graph<String, DefaultEdge> ig){
+        classGraph = ig;
+    }
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~ACCESSORS~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     public int getAmountOfVertices(){
         return classGraph.vertexSet().size();
@@ -30,6 +38,16 @@ public class ImportedGraph {
 
     public int getAmountOfEdges(){
         return classGraph.edgeSet().size();
+    }
+
+    //public access method for containsEdge
+    public boolean getIsEdge(String src, String dst){
+        return classGraph.containsEdge(src, dst);
+    }
+
+    //public access method for outgoingEdgesOf
+    public Set<DefaultEdge> getOutgoingEdges(String src){
+        return classGraph.outgoingEdgesOf(src);
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~Feature 1: importing graphs~~~~~~~~~~~~~~~~~~~~~~~~~~~//
@@ -289,9 +307,9 @@ public class ImportedGraph {
         SearchContext sc;
 
         //Create a context for each algorithm
-        BFSSearchAlgorithm bfs  = new BFSSearchAlgorithm();
-        DFSSearchAlgorithm dfs  = new DFSSearchAlgorithm();
-        RandomWalkSearchAlgorithm rws = new RandomWalkSearchAlgorithm();
+        BFSSearchAlgorithm bfs  = new BFSSearchAlgorithm(classGraph);
+        DFSSearchAlgorithm dfs  = new DFSSearchAlgorithm(classGraph);
+        RandomWalkSearchAlgorithm rws = new RandomWalkSearchAlgorithm(classGraph);
 
         switch(Algo){
 
@@ -313,233 +331,21 @@ public class ImportedGraph {
 
     }
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~Feature 4: Extaction Methods~~~~~~~~~~~~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~Strategy Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+public class SearchContext{
 
-    //builds path by reviewing all the nodes visited and removing ones that do not connect
-    private MyPath buildPath(List<String> explored, String src, String dst) {
+    //Make a generalized Search object that will determine what type of search will be done
+    private SearchAlgorithm sa;
 
-        //if the no path to the dst was found
-        if(!explored.contains(dst))
-            return null;
-        else if(explored.size() > 1){ //if path was found, trim the explored nodes to only contains the one relevant to the path
+    //Constructor
+    public SearchContext(SearchAlgorithm newContext){ sa = newContext; }
 
-            String currently = explored.get(explored.size()-1);
-            String before = explored.get(explored.size()-2);
-
-            if(!explored.get(explored.size() - 1).equals(dst)){explored.add(dst);} //add destination to end of list so the path will guarantee end with the dst
-            int ref = 1; //used to hold the position of where in the list we are comparing the values from
-
-            //Strating from the end of the list, compare the current node to the one before it
-            //if the node before it has an edge to the current node, move the reference pointer to compare from the node before the current node now
-            //if there is no edge from the node before to the current node, remove the node before
-            while(!before.equals(src)){
-
-                //if edge to current node does exist, include it in path
-                currently = explored.get(explored.size()-ref);
-                before = explored.get(explored.size()-ref-1);
-
-                if (classGraph.containsEdge(before, currently)) {
-                    ref = ref + 1;
-                }
-                else{
-                    explored.remove(explored.size()-ref-1);
-                }
-
-                //System.out.println(before + " " + currently + " ref: " + ref);
-
-            }
-        }
-
-        MyPath returnPath = new MyPath();
-        for (int i = 0; i < explored.size(); i++) {
-            returnPath.addNode(explored.get(i));
-        }
-
-        return returnPath;
-
+    //perform specific search based on the context
+    public MyPath search(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
+        return sa.searchGraph(ig, src, dst);
     }
 
-    //Returns a list of nodes that are adjacent to the given node
-    private List<String> getAdjacentNodes(String src){
-
-        List<String> nodes = new ArrayList<String>();
-        Set<DefaultEdge> currentEdges = classGraph.outgoingEdgesOf(src);
-
-        for (Object edge : currentEdges) {
-            String temp = edge.toString();
-            String[] tempArr = temp.split(":");
-
-            //Extracts the name of the adjacent node from the edge string
-            nodes.add(tempArr[1].substring(1, tempArr[1].length() - 1));
-        }
-
-        return nodes;
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Template Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    public abstract class SearchAlgorithm{
-
-        MyPath resultPath = new MyPath();
-
-        List<String> explored = new ArrayList<String>(); //Each search algo starts with different values in their explored list
-        List<String> explorable = new ArrayList<String>();
-
-        //Class specific search algorithm that searches given graph ig for dst starting from src
-        public MyPath searchGraph(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
-
-            resultPath= new MyPath();
-
-            explored = initializeExploredList(src); //Each search algo starts with different values in their explored list
-            explorable.add(src);
-
-            //If the src node is the destination node just return the path with only the src
-            if(src.equals(dst)) {
-                resultPath.addNode(src);
-                return resultPath;
-            }
-
-            //Search Template
-            while(!explorable.isEmpty()){
-                String current = getNextNode(); //grabs the next node to explore
-
-                updateExplorableList(current); //updates explorable with the next values to explore
-
-            }
-
-            resultPath = buildPath(explored, src, dst); //converts list of explored nodes to MyPath Object
-
-            return resultPath;
-        }
-
-        abstract List<String> initializeExploredList(String src);
-        abstract String getNextNode();
-        abstract void updateExplorableList(String current);
-
-    }
-
-    public class BFSSearchAlgorithm extends SearchAlgorithm{
-
-        //BFS Searching starts by adding source to the list of explored nodes
-        public List<String> initializeExploredList(String src){
-
-            super.explored.add(src);
-            return super.explored;
-
-         }
-
-        //BFS pulls values from the start of the list
-        public String getNextNode(){
-
-            return super.explorable.remove(0);
-
-        }
-
-        //BFS adds adjacent nodes to explored and explorable list if they have not been explored yet
-        public void updateExplorableList(String current){
-            //Grab all the edges for the current node
-            List<String> nodes = getAdjacentNodes(current);
-
-            for(String adjacentNode : nodes){
-                if(!super.explored.contains(adjacentNode)){
-                    super.explored.add(adjacentNode);
-                    super.explorable.add(adjacentNode);
-                }
-            }
-        }
-    }
-
-    public class DFSSearchAlgorithm extends SearchAlgorithm{
-
-        //DFS Searching starts by adding no nodes to the explored queue
-        public List<String> initializeExploredList(String src){
-
-            return new ArrayList<String>();
-
-        }
-
-        //DFS pulls values from the end of the list
-        public String getNextNode(){
-
-            return super.explorable.remove(super.explorable.size() - 1);
-
-        }
-
-        //DFS adds current node to explored if it has not yet been explored
-        //and adds all nodes adjacent to the current node to the explorable list
-        public void updateExplorableList(String current){
-            //Grab all the edges for the current node
-            List<String> nodes = getAdjacentNodes(current);
-
-            if(!explored.contains(current)){
-                explored.add(current);
-                for(String adjacentNode : nodes){
-                    explorable.add(0,adjacentNode);
-                }
-            }
-        }
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 4~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Random Walk~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    public class RandomWalkSearchAlgorithm extends SearchAlgorithm{
-
-        //RWS Searching starts by adding no nodes to the explored queue
-        public List<String> initializeExploredList(String src){
-
-            super.explored.add(src);
-
-            System.out.print("Random Search Path");
-
-            return super.explored;
-
-        }
-
-        //RWS pulls values from the start of the list
-        public String getNextNode(){
-
-            return super.explorable.remove(0);
-
-        }
-
-        //RWS adds adjacent nodes to explored and explorable list if they have not been explored yet
-        public void updateExplorableList(String current){
-            //Grab all the edges for the current node
-            List<String> nodes = getAdjacentNodes(current);
-
-            Random rand = new Random(); //Random object to generate random numbers
-            System.out.print(" -> " + current);
-
-            //insert the objects into the queue then randomize
-            for(String adjacentNode : nodes){
-
-                if(!super.explored.contains(adjacentNode)){
-                    super.explored.add(adjacentNode);
-                    super.explorable.add(adjacentNode);
-                }
-            }
-
-            Collections.shuffle(super.explorable); //randomize order
-        }
-    }
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Part 3: Feature 3~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~Strategy Pattern~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    public class SearchContext{
-
-        //Make a generalized Search object that will determine what type of search will be done
-        private SearchAlgorithm sa;
-
-        //Constructor
-        public SearchContext(SearchAlgorithm newContext){ sa = newContext; }
-
-        //perform specific search based on the context
-        public MyPath search(org.jgrapht.Graph<String, DefaultEdge> ig, String src, String dst){
-            return sa.searchGraph(ig, src, dst);
-        }
-
-    }
-
-
+}   
 
 }
