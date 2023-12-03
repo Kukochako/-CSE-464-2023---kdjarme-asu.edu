@@ -481,7 +481,7 @@ public class TestImportedGraph {
         assertNull(ig.GraphSearch("a","f", ImportedGraph.Algorithm.BFS));
     }
 
-    //Tests DFS search when source has multiple paths to destination node
+    //Tests BFS search when source has multiple paths to destination node
     @Test
     public void testBFSMultiplePaths(){
 
